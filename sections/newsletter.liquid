@@ -1,0 +1,92 @@
+<!-- ============================================================
+     FUTURETECH — NEWSLETTER SECTION
+     Email signup with AU focus and category perks
+============================================================ -->
+
+<section class="ft-newsletter">
+  <div class="ft-container">
+    <div class="ft-nl__wrap">
+      <div class="ft-nl__glow"></div>
+      <div class="ft-nl__inner">
+        <span class="ft-label">{{ section.settings.label | default: 'Stay in the Loop' }}</span>
+        <h2 class="ft-nl__title">{{ section.settings.heading | default: 'Get the Latest Tech Drops 🔔' }}</h2>
+        <p class="ft-nl__sub">{{ section.settings.subtext | default: 'Be first to know about new arrivals, exclusive deals on electronics, fitness gadgets, pet tech and wellbeing products. Join 18,000+ Aussie tech fans.' }}</p>
+
+        {% form 'customer' %}
+          {% if form.posted_successfully? %}
+            <p class="ft-nl__success">🎉 You're in! Check your inbox for your first tech drop.</p>
+          {% else %}
+            <div class="ft-nl__form">
+              <input
+                type="email"
+                name="contact[email]"
+                placeholder="{{ section.settings.placeholder | default: 'your@email.com.au' }}"
+                class="ft-nl__input"
+                required
+                autocomplete="email"
+              >
+              <input type="hidden" name="contact[tags]" value="newsletter,au-subscriber">
+              <button type="submit" class="ft-btn ft-btn--primary">
+                {{ section.settings.button_text | default: 'Subscribe' }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            {% if form.errors %}
+              <p class="ft-nl__error">{{ form.errors | default_errors }}</p>
+            {% endif %}
+          {% endif %}
+        {% endform %}
+
+        <div class="ft-nl__perks">
+          <span class="ft-nl__perk">✅ No spam ever</span>
+          <span class="ft-nl__perk">✅ Weekly tech drops</span>
+          <span class="ft-nl__perk">✅ Exclusive AU deals</span>
+          <span class="ft-nl__perk">✅ Unsubscribe anytime</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FutureTek Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Stay in the Loop"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get the Latest Tech Drops 🔔"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Be first to know about new arrivals, exclusive deals on electronics, fitness gadgets, pet tech and wellbeing products. Join 18,000+ Aussie tech fans."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input Placeholder",
+      "default": "your@email.com.au"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FutureTek Newsletter"
+    }
+  ]
+}
+{% endschema %}

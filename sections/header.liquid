@@ -1,0 +1,120 @@
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="/" class="header-logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+    </a>
+
+    <nav class="header-nav" id="main-nav">
+      <ul class="nav-list">
+        {% for link in linklists[section.settings.menu].links %}
+          <li class="nav-item">
+            <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/search" class="header-icon" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </a>
+      <a href="/account" class="header-icon" aria-label="Account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="/cart" class="header-icon cart-icon" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        {% if cart.item_count > 0 %}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,10,20,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,240,255,0.1);
+  transition: all 0.3s ease;
+}
+.site-header.scrolled {
+  background: rgba(10,10,20,0.98);
+  box-shadow: 0 4px 30px rgba(0,240,255,0.1);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px; gap: 32px;
+}
+.header-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.4rem; font-weight: 800; color: #fff;
+  text-decoration: none; flex-shrink: 0;
+}
+.logo-icon { font-size: 1.6rem; }
+.logo-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-nav { flex: 1; display: flex; justify-content: center; }
+.nav-list { display: flex; gap: 8px; list-style: none; }
+.nav-link {
+  padding: 8px 16px; border-radius: 8px;
+  color: var(--color-text-muted); font-weight: 500; font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--color-primary);
+  background: rgba(0,240,255,0.08);
+}
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.header-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); transition: all 0.2s; position: relative;
+}
+.header-icon:hover { color: var(--color-primary); background: rgba(0,240,255,0.08); }
+.cart-count {
+  position: absolute; top: 4px; right: 4px;
+  background: var(--color-primary); color: var(--color-bg);
+  font-size: 0.6rem; font-weight: 700; width: 16px; height: 16px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.mobile-menu-btn {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 8px;
+}
+.mobile-menu-btn span {
+  display: block; width: 22px; height: 2px;
+  background: var(--color-text); border-radius: 2px; transition: all 0.3s;
+}
+@media (max-width: 768px) {
+  .header-nav { display: none; }
+  .mobile-menu-btn { display: flex; }
+}
+</style>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const header = document.getElementById('site-header');
+    if (window.scrollY > 20) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo Text", "default": "FutureTek" },
+    { "type": "link_list", "id": "menu", "label": "Navigation Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,153 @@
+<!-- ============================================================
+     FUTURETECH — FOOTER SECTION
+     Multi-col footer with AU payment badges and social links
+============================================================ -->
+
+<footer class="ft-footer">
+  <div class="ft-container">
+    <div class="ft-footer__grid">
+
+      <!-- Brand column -->
+      <div class="ft-footer__brand">
+        <div class="ft-footer__logo">
+          <div class="ft-logo-icon">⚡</div>
+          <span class="ft-logo-name">FutureTek</span>
+        </div>
+        <p class="ft-footer__tagline">{{ section.settings.tagline | default: "Australia's go-to tech store for electronics, fitness, pet technology and wellbeing gadgets. 🇦🇺" }}</p>
+        <div class="ft-footer__cats">
+          <span>💻 Electronics</span>
+          <span>💪 Fitness</span>
+          <span>🐾 Pet Tech</span>
+          <span>🧘 Wellbeing</span>
+        </div>
+        <div class="ft-footer__social">
+          {% if section.settings.twitter_url != blank %}
+            <a href="{{ section.settings.twitter_url }}" class="ft-soc-btn" aria-label="X (Twitter)">𝕏</a>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="ft-soc-btn" aria-label="Instagram">📷</a>
+          {% endif %}
+          {% if section.settings.youtube_url != blank %}
+            <a href="{{ section.settings.youtube_url }}" class="ft-soc-btn" aria-label="YouTube">▶</a>
+          {% endif %}
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" class="ft-soc-btn" aria-label="TikTok">🎵</a>
+          {% endif %}
+          {% if section.settings.twitter_url == blank and section.settings.instagram_url == blank %}
+            <a href="#" class="ft-soc-btn">𝕏</a>
+            <a href="#" class="ft-soc-btn">📷</a>
+            <a href="#" class="ft-soc-btn">▶</a>
+            <a href="#" class="ft-soc-btn">🎵</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Shop column -->
+      <div>
+        <div class="ft-footer__heading">Shop</div>
+        <ul class="ft-footer__links">
+          <li><a href="/collections/all">All Products</a></li>
+          <li><a href="/collections/electronics">Electronics</a></li>
+          <li><a href="/collections/fitness-tech">Fitness Tech</a></li>
+          <li><a href="/collections/pet-technology">Pet Technology</a></li>
+          <li><a href="/collections/wellbeing">Wellbeing</a></li>
+          <li><a href="/collections/new-arrivals">New Arrivals</a></li>
+          <li><a href="/collections/sale" style="color:#ff2d6f">🔥 Sale</a></li>
+        </ul>
+      </div>
+
+      <!-- Company column -->
+      <div>
+        <div class="ft-footer__heading">Company</div>
+        <ul class="ft-footer__links">
+          <li><a href="/pages/about">About FutureTek</a></li>
+          <li><a href="/pages/tech-experts">Our Tech Experts</a></li>
+          <li><a href="/pages/sustainability">Sustainability</a></li>
+          <li><a href="/pages/affiliate">Affiliate Program</a></li>
+          <li><a href="/pages/careers">Careers</a></li>
+          <li><a href="/pages/press">Press</a></li>
+        </ul>
+      </div>
+
+      <!-- Support column -->
+      <div>
+        <div class="ft-footer__heading">Support</div>
+        <ul class="ft-footer__links">
+          <li><a href="/pages/help">Help Centre</a></li>
+          <li><a href="/pages/track-order">Track My Order</a></li>
+          <li><a href="/pages/returns">Returns &amp; Warranty</a></li>
+          <li><a href="/pages/tech-support">Tech Support</a></li>
+          <li><a href="/pages/shipping">Shipping Info</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="ft-footer__bottom">
+      <div class="ft-footer__copy">
+        © {{ 'now' | date: '%Y' }} FutureTek Pty Ltd
+        {% if section.settings.abn != blank %}· ABN: {{ section.settings.abn }}{% endif %}
+        · All rights reserved
+      </div>
+      <div class="ft-footer__payments">
+        <span class="ft-pay-badge">🔒 SSL</span>
+        <span class="ft-pay-badge">💳 Visa</span>
+        <span class="ft-pay-badge">💳 Mastercard</span>
+        <span class="ft-pay-badge">🅿️ PayPal</span>
+        <span class="ft-pay-badge">🍏 AfterPay</span>
+        <span class="ft-pay-badge">📦 Zip</span>
+        <span class="ft-pay-badge">🇦🇺 Ships AU-wide</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "FutureTek Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Brand Tagline",
+      "default": "Australia's go-to tech store for electronics, fitness, pet technology and wellbeing gadgets. 🇦🇺"
+    },
+    {
+      "type": "text",
+      "id": "abn",
+      "label": "ABN Number",
+      "default": "00 000 000 000"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "X (Twitter) URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FutureTek Footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+# Preview only (not part of Shopify theme)
+preview.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+
+# Logs
+*.log

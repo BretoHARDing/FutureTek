@@ -1,0 +1,76 @@
+<!-- ============================================================
+     FUTURETECH — TRUST BAR SECTION
+     Free AU delivery · Returns · Warranty · Support · AfterPay
+============================================================ -->
+
+<div class="ft-trust-bar">
+  <div class="ft-container">
+    <div class="ft-trust__inner">
+
+      {% for block in section.blocks %}
+        {% if block.type == 'trust_item' %}
+          <div class="ft-trust__item" {{ block.shopify_attributes }}>
+            <span class="ft-trust__icon">{{ block.settings.icon }}</span>
+            <span>{{ block.settings.text }}</span>
+          </div>
+          {% unless forloop.last %}<div class="ft-trust__sep"></div>{% endunless %}
+        {% endif %}
+      {% endfor %}
+
+      {% if section.blocks.size == 0 %}
+        <div class="ft-trust__item"><span class="ft-trust__icon">🚚</span><span>Free AU Delivery Over $100</span></div>
+        <div class="ft-trust__sep"></div>
+        <div class="ft-trust__item"><span class="ft-trust__icon">🔄</span><span>30-Day Free Returns</span></div>
+        <div class="ft-trust__sep"></div>
+        <div class="ft-trust__item"><span class="ft-trust__icon">🛡️</span><span>2-Year Warranty</span></div>
+        <div class="ft-trust__sep"></div>
+        <div class="ft-trust__item"><span class="ft-trust__icon">💬</span><span>24/7 Tech Support</span></div>
+        <div class="ft-trust__sep"></div>
+        <div class="ft-trust__item"><span class="ft-trust__icon">🔒</span><span>Secure Checkout</span></div>
+        <div class="ft-trust__sep"></div>
+        <div class="ft-trust__item"><span class="ft-trust__icon">💳</span><span>AfterPay &amp; Zip</span></div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FutureTek Trust Bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji Icon",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free AU Delivery Over $100"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FutureTek Trust Bar",
+      "blocks": [
+        { "type": "trust_item", "settings": { "icon": "🚚", "text": "Free AU Delivery Over $100" } },
+        { "type": "trust_item", "settings": { "icon": "🔄", "text": "30-Day Free Returns" } },
+        { "type": "trust_item", "settings": { "icon": "🛡️", "text": "2-Year Warranty" } },
+        { "type": "trust_item", "settings": { "icon": "💬", "text": "24/7 Tech Support" } },
+        { "type": "trust_item", "settings": { "icon": "🔒", "text": "Secure Checkout" } },
+        { "type": "trust_item", "settings": { "icon": "💳", "text": "AfterPay & Zip" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

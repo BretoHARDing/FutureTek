@@ -1,0 +1,341 @@
+<!-- ============================================================
+     FUTURETECH — PRICING MATRIX SECTION
+     AUD tier-based pricing logic display + profit calculator
+     Operator Playbook aligned: low/mid/high-ticket logic
+============================================================ -->
+
+<section class="ft-pricing-matrix section-pad" id="pricing-matrix">
+  <div class="ft-container">
+
+    <div class="ft-section-head">
+      <span class="ft-label">{{ section.settings.label | default: 'Pricing Strategy' }}</span>
+      <h2 class="ft-section-title">{{ section.settings.heading | default: 'AUD Pricing Matrix' }}</h2>
+      <p class="ft-section-sub">{{ section.settings.subheading | default: 'Profit-optimised pricing tiers based on supplier cost. Apply the right margin multiplier for every product.' }}</p>
+    </div>
+
+    <!-- ── TIER CARDS ── -->
+    <div class="ft-pm-tiers">
+
+      <!-- LOW TICKET -->
+      <div class="ft-pm-tier ft-pm-tier--low">
+        <div class="ft-pm-tier__badge">Low-Ticket</div>
+        <div class="ft-pm-tier__cost">Supplier Cost: $0 – $15</div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Sell Price</span>
+          <span class="ft-pm-tier__value">Cost + $25–$40</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Min Margin</span>
+          <span class="ft-pm-tier__value ft-pm-tier__value--green">$20 AUD</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Max Discount</span>
+          <span class="ft-pm-tier__value">≤ 25%</span>
+        </div>
+        <div class="ft-pm-tier__example">
+          <div class="ft-pm-tier__ex-label">Example</div>
+          <div class="ft-pm-tier__ex-row"><span>Supplier cost</span><span>$8.00</span></div>
+          <div class="ft-pm-tier__ex-row"><span>Sell price</span><span>$39.99</span></div>
+          <div class="ft-pm-tier__ex-row ft-pm-tier__ex-row--profit"><span>Margin</span><span>$31.99 (80%)</span></div>
+        </div>
+      </div>
+
+      <!-- MID TICKET -->
+      <div class="ft-pm-tier ft-pm-tier--mid ft-pm-tier--featured">
+        <div class="ft-pm-tier__badge">Mid-Ticket</div>
+        <div class="ft-pm-tier__cost">Supplier Cost: $15.01 – $60</div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Multiplier</span>
+          <span class="ft-pm-tier__value">× 2.2 – 3.0</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Gross Margin</span>
+          <span class="ft-pm-tier__value ft-pm-tier__value--green">≥ 55% GM</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Max Discount</span>
+          <span class="ft-pm-tier__value">≤ 30%</span>
+        </div>
+        <div class="ft-pm-tier__subs">
+          <div class="ft-pm-tier__sub-row"><span>$15–$30</span><span class="ft-pm-tier__value">× 2.8</span></div>
+          <div class="ft-pm-tier__sub-row"><span>$30–$60</span><span class="ft-pm-tier__value">× 2.4</span></div>
+        </div>
+        <div class="ft-pm-tier__example">
+          <div class="ft-pm-tier__ex-label">Example</div>
+          <div class="ft-pm-tier__ex-row"><span>Supplier cost</span><span>$22.00</span></div>
+          <div class="ft-pm-tier__ex-row"><span>Sell price</span><span>$61.60</span></div>
+          <div class="ft-pm-tier__ex-row ft-pm-tier__ex-row--profit"><span>Margin</span><span>$39.60 (64%)</span></div>
+        </div>
+        <div class="ft-pm-tier__rec">⭐ Sweet spot for most SKUs</div>
+      </div>
+
+      <!-- HIGH TICKET -->
+      <div class="ft-pm-tier ft-pm-tier--high">
+        <div class="ft-pm-tier__badge">High-Ticket</div>
+        <div class="ft-pm-tier__cost">Supplier Cost: $60+</div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Multiplier</span>
+          <span class="ft-pm-tier__value">× 1.8 – 2.4 or +$80–$150</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Min Margin</span>
+          <span class="ft-pm-tier__value ft-pm-tier__value--green">$80 AUD</span>
+        </div>
+        <div class="ft-pm-tier__rule">
+          <span class="ft-pm-tier__label">Discount Range</span>
+          <span class="ft-pm-tier__value">15–20%</span>
+        </div>
+        <div class="ft-pm-tier__subs">
+          <div class="ft-pm-tier__sub-row"><span>$60–$120</span><span class="ft-pm-tier__value">× 2.1</span></div>
+          <div class="ft-pm-tier__sub-row"><span>$120+</span><span class="ft-pm-tier__value">× 1.9 or +$140</span></div>
+        </div>
+        <div class="ft-pm-tier__example">
+          <div class="ft-pm-tier__ex-label">Example</div>
+          <div class="ft-pm-tier__ex-row"><span>Supplier cost</span><span>$85.00</span></div>
+          <div class="ft-pm-tier__ex-row"><span>Sell price</span><span>$178.50</span></div>
+          <div class="ft-pm-tier__ex-row ft-pm-tier__ex-row--profit"><span>Margin</span><span>$93.50 (52%)</span></div>
+        </div>
+      </div>
+
+    </div><!-- /ft-pm-tiers -->
+
+    <!-- ── PROFIT CALCULATOR ── -->
+    <div class="ft-pm-calc">
+      <h3 class="ft-pm-calc__title">💡 Instant Profit Calculator</h3>
+      <p class="ft-pm-calc__sub">Enter supplier cost to get recommended sell price and margin</p>
+      <div class="ft-pm-calc__row">
+        <div class="ft-pm-calc__field">
+          <label>Supplier Cost (AUD)</label>
+          <div class="ft-pm-calc__input-wrap">
+            <span class="ft-pm-calc__prefix">$</span>
+            <input type="number" id="ft-pm-cost" placeholder="e.g. 25.00" step="0.01" min="0" oninput="ftCalcPrice()">
+          </div>
+        </div>
+        <div class="ft-pm-calc__arrow">→</div>
+        <div class="ft-pm-calc__results" id="ft-pm-results">
+          <div class="ft-pm-calc__result-item">
+            <span class="ft-pm-calc__result-label">Sell Price</span>
+            <span class="ft-pm-calc__result-value" id="ft-pm-sell">—</span>
+          </div>
+          <div class="ft-pm-calc__result-item">
+            <span class="ft-pm-calc__result-label">Gross Margin $</span>
+            <span class="ft-pm-calc__result-value ft-pm-calc__result-value--green" id="ft-pm-margin">—</span>
+          </div>
+          <div class="ft-pm-calc__result-item">
+            <span class="ft-pm-calc__result-label">Margin %</span>
+            <span class="ft-pm-calc__result-value" id="ft-pm-pct">—</span>
+          </div>
+          <div class="ft-pm-calc__result-item">
+            <span class="ft-pm-calc__result-label">Tier</span>
+            <span class="ft-pm-calc__result-value" id="ft-pm-tier">—</span>
+          </div>
+        </div>
+      </div>
+      <div class="ft-pm-calc__note" id="ft-pm-note"></div>
+    </div>
+
+    <!-- ── PRICING RULES TABLE ── -->
+    <div class="ft-pm-table-wrap">
+      <h3 class="ft-pm-table__title">Full Pricing Reference Table</h3>
+      <div class="ft-pm-table-scroll">
+        <table class="ft-pm-table">
+          <thead>
+            <tr>
+              <th>Supplier Cost Range</th>
+              <th>Multiplier / Adder</th>
+              <th>Example Sell Price</th>
+              <th>Min Margin</th>
+              <th>Max Discount</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>$0 – $15</td><td>Cost + $25–$40</td><td>$8 → $39.99</td><td>$20</td><td>25%</td><td><span class="ft-pm-badge ft-pm-badge--low">Low</span></td></tr>
+            <tr><td>$15.01 – $30</td><td>× 2.8</td><td>$22 → $61.60</td><td>55% GM</td><td>30%</td><td><span class="ft-pm-badge ft-pm-badge--mid">Mid</span></td></tr>
+            <tr class="ft-pm-table__highlight"><td>$30.01 – $60</td><td>× 2.4</td><td>$45 → $108.00</td><td>55% GM</td><td>30%</td><td><span class="ft-pm-badge ft-pm-badge--mid">Mid</span></td></tr>
+            <tr><td>$60.01 – $120</td><td>× 2.1</td><td>$85 → $178.50</td><td>$80</td><td>20%</td><td><span class="ft-pm-badge ft-pm-badge--high">High</span></td></tr>
+            <tr><td>$120+</td><td>× 1.9 or +$140</td><td>$150 → $285</td><td>$80</td><td>15%</td><td><span class="ft-pm-badge ft-pm-badge--high">High</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRICING RISK GUARDRAILS ── -->
+    <div class="ft-pm-guardrails">
+      <h3 class="ft-pm-guardrails__title">⚠️ Pricing Guardrails — Avoid These Errors</h3>
+      <div class="ft-pm-guardrails__grid">
+        <div class="ft-pm-guardrail ft-pm-guardrail--red">
+          <div class="ft-pm-guardrail__icon">🚫</div>
+          <div class="ft-pm-guardrail__title">Price-Anchor Drift</div>
+          <div class="ft-pm-guardrail__desc">Never set compare_at_price lower than sell price. Shopify auto-sorts sale items — inverted anchors destroy trust and may breach ACCC guidelines on misleading pricing.</div>
+        </div>
+        <div class="ft-pm-guardrail ft-pm-guardrail--orange">
+          <div class="ft-pm-guardrail__icon">⚡</div>
+          <div class="ft-pm-guardrail__title">Race to the Bottom</div>
+          <div class="ft-pm-guardrail__desc">Do not undercut based on competitor price alone. You will erode margin and signal low quality. Compete on trust, speed and offer stack instead.</div>
+        </div>
+        <div class="ft-pm-guardrail ft-pm-guardrail--yellow">
+          <div class="ft-pm-guardrail__icon">📉</div>
+          <div class="ft-pm-guardrail__title">Below-Min Margin</div>
+          <div class="ft-pm-guardrail__desc">Selling below minimum margin targets (especially on ad-driven traffic) is unsustainable. Set Shopify Flow alerts when margin drops below threshold.</div>
+        </div>
+        <div class="ft-pm-guardrail ft-pm-guardrail--blue">
+          <div class="ft-pm-guardrail__icon">🔄</div>
+          <div class="ft-pm-guardrail__title">No Dynamic Review</div>
+          <div class="ft-pm-guardrail__desc">Review pricing rules weekly. Supplier cost changes, exchange rate shifts, and ad CPM increases can all compress margin without visible symptoms.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ── Pricing Matrix Base ── */
+.ft-pm-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:56px; align-items:start; }
+
+/* ── Tier Cards ── */
+.ft-pm-tier { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:20px; padding:28px 24px; position:relative; }
+.ft-pm-tier--featured { border-color:rgba(0,240,255,.3); background:linear-gradient(145deg,rgba(0,240,255,.04),rgba(123,47,255,.04)); box-shadow:0 0 30px rgba(0,240,255,.06); }
+.ft-pm-tier__badge { display:inline-block; padding:5px 14px; border-radius:50px; font-size:.72rem; font-weight:900; letter-spacing:.8px; text-transform:uppercase; margin-bottom:12px; }
+.ft-pm-tier--low .ft-pm-tier__badge { background:rgba(52,211,153,.12); color:#34d399; }
+.ft-pm-tier--mid .ft-pm-tier__badge { background:rgba(0,240,255,.12); color:var(--ft-cyan); }
+.ft-pm-tier--high .ft-pm-tier__badge { background:rgba(123,47,255,.12); color:var(--ft-purple); }
+.ft-pm-tier__cost { font-size:.8rem; color:var(--ft-muted); margin-bottom:20px; font-weight:600; }
+.ft-pm-tier__rule { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.85rem; }
+.ft-pm-tier__label { color:var(--ft-muted); }
+.ft-pm-tier__value { font-weight:800; color:#fff; }
+.ft-pm-tier__value--green { color:#34d399; }
+.ft-pm-tier__subs { margin:14px 0; }
+.ft-pm-tier__sub-row { display:flex; justify-content:space-between; font-size:.78rem; padding:5px 0; color:var(--ft-muted); }
+.ft-pm-tier__sub-row .ft-pm-tier__value { color:var(--ft-cyan); font-size:.78rem; }
+.ft-pm-tier__example { margin-top:18px; background:rgba(255,255,255,.02); border-radius:10px; padding:14px; }
+.ft-pm-tier__ex-label { font-size:.68rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:8px; }
+.ft-pm-tier__ex-row { display:flex; justify-content:space-between; font-size:.82rem; color:var(--ft-text); padding:4px 0; }
+.ft-pm-tier__ex-row--profit { color:#34d399; font-weight:800; border-top:1px solid rgba(255,255,255,.06); margin-top:4px; padding-top:8px; }
+.ft-pm-tier__rec { margin-top:14px; text-align:center; font-size:.75rem; font-weight:800; color:var(--ft-cyan); background:rgba(0,240,255,.06); border:1px solid rgba(0,240,255,.12); border-radius:8px; padding:7px; }
+
+/* ── Profit Calculator ── */
+.ft-pm-calc { background:var(--ft-surface); border:1px solid rgba(0,240,255,.15); border-radius:20px; padding:32px; margin-bottom:40px; }
+.ft-pm-calc__title { font-size:1.15rem; font-weight:900; color:#fff; margin-bottom:6px; }
+.ft-pm-calc__sub { font-size:.85rem; color:var(--ft-muted); margin-bottom:24px; }
+.ft-pm-calc__row { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+.ft-pm-calc__field { flex:1; min-width:200px; }
+.ft-pm-calc__field label { display:block; font-size:.78rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+.ft-pm-calc__input-wrap { display:flex; align-items:center; background:rgba(255,255,255,.04); border:1px solid var(--ft-border); border-radius:10px; overflow:hidden; }
+.ft-pm-calc__prefix { padding:0 12px; font-size:1rem; color:var(--ft-cyan); font-weight:800; }
+.ft-pm-calc__input-wrap input { flex:1; background:none; border:none; padding:14px 14px 14px 0; font-size:1rem; color:#fff; outline:none; }
+.ft-pm-calc__arrow { font-size:1.5rem; color:var(--ft-cyan); flex-shrink:0; }
+.ft-pm-calc__results { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; flex:2; }
+.ft-pm-calc__result-item { background:rgba(255,255,255,.03); border-radius:10px; padding:12px 14px; border:1px solid var(--ft-border); }
+.ft-pm-calc__result-label { font-size:.68rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:6px; }
+.ft-pm-calc__result-value { font-size:1rem; font-weight:900; color:#fff; }
+.ft-pm-calc__result-value--green { color:#34d399; }
+.ft-pm-calc__note { margin-top:16px; font-size:.82rem; color:var(--ft-muted); min-height:20px; }
+
+/* ── Table ── */
+.ft-pm-table-wrap { margin-bottom:40px; }
+.ft-pm-table__title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:16px; }
+.ft-pm-table-scroll { overflow-x:auto; }
+.ft-pm-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.ft-pm-table th { background:rgba(255,255,255,.04); color:var(--ft-muted); font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; padding:12px 16px; text-align:left; border-bottom:1px solid var(--ft-border); }
+.ft-pm-table td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--ft-text); }
+.ft-pm-table__highlight td { background:rgba(0,240,255,.02); }
+.ft-pm-badge { padding:3px 10px; border-radius:50px; font-size:.68rem; font-weight:900; }
+.ft-pm-badge--low { background:rgba(52,211,153,.12); color:#34d399; }
+.ft-pm-badge--mid { background:rgba(0,240,255,.12); color:var(--ft-cyan); }
+.ft-pm-badge--high { background:rgba(123,47,255,.12); color:var(--ft-purple); }
+
+/* ── Guardrails ── */
+.ft-pm-guardrails { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:20px; padding:32px; }
+.ft-pm-guardrails__title { font-size:1rem; font-weight:800; color:#fff; margin-bottom:20px; }
+.ft-pm-guardrails__grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.ft-pm-guardrail { border-radius:12px; padding:20px 16px; border:1px solid; }
+.ft-pm-guardrail--red { background:rgba(255,45,111,.04); border-color:rgba(255,45,111,.15); }
+.ft-pm-guardrail--orange { background:rgba(255,107,53,.04); border-color:rgba(255,107,53,.15); }
+.ft-pm-guardrail--yellow { background:rgba(255,193,7,.04); border-color:rgba(255,193,7,.15); }
+.ft-pm-guardrail--blue { background:rgba(0,240,255,.04); border-color:rgba(0,240,255,.15); }
+.ft-pm-guardrail__icon { font-size:1.6rem; margin-bottom:10px; }
+.ft-pm-guardrail__title { font-size:.88rem; font-weight:800; color:#fff; margin-bottom:7px; }
+.ft-pm-guardrail__desc { font-size:.78rem; color:var(--ft-muted); line-height:1.65; }
+
+@media(max-width:900px) {
+  .ft-pm-tiers { grid-template-columns:1fr; }
+  .ft-pm-calc__results { grid-template-columns:repeat(2,1fr); }
+  .ft-pm-guardrails__grid { grid-template-columns:1fr 1fr; }
+  .ft-pm-calc__row { flex-direction:column; }
+  .ft-pm-calc__arrow { transform:rotate(90deg); }
+}
+@media(max-width:600px) {
+  .ft-pm-guardrails__grid { grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+function ftCalcPrice() {
+  const cost = parseFloat(document.getElementById('ft-pm-cost').value);
+  const sell = document.getElementById('ft-pm-sell');
+  const margin = document.getElementById('ft-pm-margin');
+  const pct = document.getElementById('ft-pm-pct');
+  const tier = document.getElementById('ft-pm-tier');
+  const note = document.getElementById('ft-pm-note');
+
+  if (isNaN(cost) || cost <= 0) {
+    sell.textContent = '—'; margin.textContent = '—'; pct.textContent = '—'; tier.textContent = '—'; note.textContent = '';
+    return;
+  }
+
+  let sellPrice, tierName, multiplierNote;
+  if (cost <= 15) {
+    sellPrice = Math.max(cost + 25, cost + 30);
+    tierName = 'Low-Ticket';
+    multiplierNote = 'Cost + $30 flat adder applied. Min margin $20 AUD.';
+  } else if (cost <= 30) {
+    sellPrice = cost * 2.8;
+    tierName = 'Mid-Ticket';
+    multiplierNote = '× 2.8 multiplier applied. Target ≥ 55% GM.';
+  } else if (cost <= 60) {
+    sellPrice = cost * 2.4;
+    tierName = 'Mid-Ticket';
+    multiplierNote = '× 2.4 multiplier applied. Target ≥ 55% GM.';
+  } else if (cost <= 120) {
+    sellPrice = Math.max(cost * 2.1, cost + 80);
+    tierName = 'High-Ticket';
+    multiplierNote = '× 2.1 or +$80 (whichever is higher). Min margin $80 AUD.';
+  } else {
+    sellPrice = Math.max(cost * 1.9, cost + 140);
+    tierName = 'High-Ticket';
+    multiplierNote = '× 1.9 or +$140 (whichever is higher). Min margin $80 AUD.';
+  }
+
+  const marginAmt = sellPrice - cost;
+  const marginPct = (marginAmt / sellPrice * 100).toFixed(1);
+
+  sell.textContent = '$' + sellPrice.toFixed(2);
+  margin.textContent = '$' + marginAmt.toFixed(2);
+  pct.textContent = marginPct + '%';
+  tier.textContent = tierName;
+  note.textContent = multiplierNote;
+
+  const isLow = marginAmt < 20 || (cost <= 15 && marginAmt < 20);
+  const isHighTicketLow = cost > 60 && marginAmt < 80;
+  if (isLow || isHighTicketLow) {
+    note.textContent += ' ⚠️ WARNING: Below minimum margin threshold — review pricing.';
+    note.style.color = '#fbbf24';
+  } else {
+    note.style.color = 'var(--ft-muted)';
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "FutureTek Pricing Matrix",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Section Label", "default": "Pricing Strategy" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "AUD Pricing Matrix" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Profit-optimised pricing tiers based on supplier cost. Apply the right margin multiplier for every product." }
+  ],
+  "presets": [{ "name": "FutureTek Pricing Matrix" }]
+}
+{% endschema %}

@@ -1,0 +1,132 @@
+<!-- ============================================================
+     FUTURETECH — WHY FUTURETECH / FEATURES SECTION
+     6-card benefits grid, AU-optimised
+============================================================ -->
+
+<section class="ft-why section-pad">
+  <div class="ft-container">
+    <div class="ft-section-head">
+      <span class="ft-label">{{ section.settings.label | default: 'Why FutureTek' }}</span>
+      <h2 class="ft-section-title">{{ section.settings.heading | default: 'Shop Smarter, Live Better' }}</h2>
+      <p class="ft-section-sub">{{ section.settings.subheading | default: 'We hand-pick only the best technology products. No junk, ever.' }}</p>
+    </div>
+
+    <div class="ft-why__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div class="ft-why__card" {{ block.shopify_attributes }}>
+            <div class="ft-why__icon" style="background:{{ block.settings.icon_bg | default: 'rgba(0,240,255,.1)' }}">
+              {{ block.settings.icon | default: '🏆' }}
+            </div>
+            <div class="ft-why__title">{{ block.settings.title }}</div>
+            <div class="ft-why__desc">{{ block.settings.description }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% if section.blocks.size == 0 %}
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(0,240,255,.1)">🏆</div>
+          <div class="ft-why__title">Expert Curated</div>
+          <div class="ft-why__desc">Every product is hand-picked by our tech experts for quality, innovation and real-world value — no junk, ever.</div>
+        </div>
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(52,211,153,.1)">🚚</div>
+          <div class="ft-why__title">Fast AU Delivery</div>
+          <div class="ft-why__desc">Free shipping on orders over $100 AUD. Dispatched directly from Australian and local suppliers for speed.</div>
+        </div>
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(123,47,255,.1)">🛡️</div>
+          <div class="ft-why__title">2-Year Warranty</div>
+          <div class="ft-why__desc">All products come with minimum 2-year warranty and a 30-day hassle-free returns policy — no drama.</div>
+        </div>
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(255,107,53,.1)">🤖</div>
+          <div class="ft-why__title">24/7 Tech Support</div>
+          <div class="ft-why__desc">Our Aussie tech support team is available around the clock via chat, email and phone to help you get setup.</div>
+        </div>
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(255,45,111,.1)">💳</div>
+          <div class="ft-why__title">Buy Now, Pay Later</div>
+          <div class="ft-why__desc">Spread payments with AfterPay and Zip. Shop with your favourite AU payment method — cards, PayPal and more.</div>
+        </div>
+        <div class="ft-why__card">
+          <div class="ft-why__icon" style="background:rgba(0,240,255,.1)">🌱</div>
+          <div class="ft-why__title">Eco Conscious</div>
+          <div class="ft-why__desc">We offset our carbon footprint per order and prioritise brands committed to sustainable, ethical practices.</div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FutureTek Why Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "Why FutureTek"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop Smarter, Live Better"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "We hand-pick only the best technology products so you do not have to sort through the noise."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji Icon",
+          "default": "🏆"
+        },
+        {
+          "type": "text",
+          "id": "icon_bg",
+          "label": "Icon Background Colour",
+          "default": "rgba(0,240,255,.1)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Brief description of this feature or benefit."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FutureTek Why Us",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "🏆", "icon_bg": "rgba(0,240,255,.1)", "title": "Expert Curated", "description": "Every product is hand-picked by our tech experts for quality, innovation and real-world value — no junk, ever." } },
+        { "type": "feature", "settings": { "icon": "🚚", "icon_bg": "rgba(52,211,153,.1)", "title": "Fast AU Delivery", "description": "Free shipping on orders over $100 AUD. Dispatched from Australian and local suppliers for speed." } },
+        { "type": "feature", "settings": { "icon": "🛡️", "icon_bg": "rgba(123,47,255,.1)", "title": "2-Year Warranty", "description": "All products include a minimum 2-year warranty and 30-day hassle-free returns — no drama." } },
+        { "type": "feature", "settings": { "icon": "🤖", "icon_bg": "rgba(255,107,53,.1)", "title": "24/7 Tech Support", "description": "Our Aussie tech support team is available around the clock via chat, email and phone." } },
+        { "type": "feature", "settings": { "icon": "💳", "icon_bg": "rgba(255,45,111,.1)", "title": "Buy Now, Pay Later", "description": "Spread payments with AfterPay and Zip. All major AU payment methods accepted." } },
+        { "type": "feature", "settings": { "icon": "🌱", "icon_bg": "rgba(0,240,255,.1)", "title": "Eco Conscious", "description": "We offset our carbon footprint per order and prioritise sustainable brands." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

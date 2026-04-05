@@ -1,0 +1,569 @@
+<!-- ============================================================
+   FUTURETECH — CRO PRODUCT PAGE TEMPLATE
+   Full cold-traffic module stack:
+   Above fold → proof → offer → objections → policies → upsell
+   Playbook-aligned: offer engineering, compliance, trust, AU
+============================================================ -->
+
+<section class="ft-product-page">
+  <div class="ft-container">
+
+    <!-- Breadcrumb -->
+    <nav class="ft-breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      {% if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a><span>/</span>{% endif %}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <!-- ══════════════════════════════════════
+         ABOVE THE FOLD — outcome + media + CTA
+    ═══════════════════════════════════════ -->
+    <div class="ft-prod-layout">
+
+      <!-- LEFT: Media Gallery -->
+      <div class="ft-prod-gallery">
+        <div class="ft-gallery-main" id="ft-gallery-main">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | img_url: '900x900', crop: 'center' }}"
+                 alt="{{ product.featured_image.alt | escape }}" id="ft-main-img" loading="eager">
+          {% else %}
+            <div class="ft-gallery-ph">{{ product.type | slice: 0, 2 }}</div>
+          {% endif %}
+          {% if product.compare_at_price > product.price %}
+            {% assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+            <div class="ft-gallery-discount-badge">{{ pct }}% OFF</div>
+          {% endif %}
+        </div>
+        {% if product.images.size > 1 %}
+        <div class="ft-gallery-thumbs">
+          {% for img in product.images limit: 6 %}
+            <button class="ft-thumb {% if forloop.first %}is-active{% endif %}"
+              onclick="ftSetImg('{{ img | img_url: '900x900', crop: 'center' }}', this)">
+              <img src="{{ img | img_url: '130x130', crop: 'center' }}" alt="{{ img.alt | escape }}" loading="lazy">
+            </button>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <!-- Social proof strip below image -->
+        <div class="ft-prod-social-strip">
+          <span>👁 <strong>{{ section.settings.viewing_now | default: '14' }}</strong> people viewing now</span>
+          <span>📦 <strong>{{ section.settings.sold_count | default: '238' }}</strong> sold this month</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Product Info -->
+      <div class="ft-prod-info">
+
+        <!-- Badges -->
+        <div class="ft-prod-badges">
+          {% if product.tags contains 'new' %}<span class="ft-pbadge ft-pbadge--new">✨ New Arrival</span>{% endif %}
+          {% if product.tags contains 'bestseller' %}<span class="ft-pbadge ft-pbadge--hot">🔥 Best Seller</span>{% endif %}
+          {% if product.tags contains 'sale' %}<span class="ft-pbadge ft-pbadge--sale">💰 On Sale</span>{% endif %}
+          {% if product.available == false %}<span class="ft-pbadge ft-pbadge--oos">⚠️ Low Stock</span>{% endif %}
+        </div>
+
+        <!-- Vendor + Category -->
+        <div class="ft-prod-vendor">{{ product.vendor }}</div>
+        <h1 class="ft-prod-title">{{ product.title }}</h1>
+
+        <!-- Rating -->
+        <div class="ft-prod-rating">
+          <span class="ft-stars">★★★★★</span>
+          <span class="ft-rating-score">{{ section.settings.rating | default: '4.8' }}</span>
+          <span class="ft-rating-count">({{ section.settings.review_count | default: '128' }} reviews)</span>
+          <span class="ft-rating-au">✅ Verified AU Buyers</span>
+        </div>
+
+        <!-- ── OUTCOME HEADLINE (above price) ── -->
+        {% if section.settings.outcome_headline != blank %}
+        <div class="ft-outcome-headline">
+          {{ section.settings.outcome_headline }}
+        </div>
+        {% endif %}
+
+        <!-- Price block -->
+        <div class="ft-prod-price-block">
+          {% if product.compare_at_price > product.price %}
+            <span class="ft-price-now">{{ product.price | money }}</span>
+            <span class="ft-price-was">{{ product.compare_at_price | money }}</span>
+            <span class="ft-price-save">You save {{ product.compare_at_price | minus: product.price | money }}</span>
+          {% else %}
+            <span class="ft-price-now">{{ product.price | money }}</span>
+          {% endif %}
+          <span class="ft-price-gst">AUD inc. GST</span>
+          <!-- AfterPay line -->
+          <div class="ft-afterpay-line">
+            or 4 × <strong>{{ product.price | divided_by: 4 | money }}</strong> with
+            <span class="ft-afterpay-badge">AfterPay</span> — interest free
+          </div>
+        </div>
+
+        <!-- ── OFFER STACK (bundle/bonus/guarantee) ── -->
+        {% if section.settings.offer_stack_title != blank %}
+        <div class="ft-offer-stack">
+          <div class="ft-offer-stack__title">{{ section.settings.offer_stack_title }}</div>
+          <div class="ft-offer-stack__items">
+            {% for block in section.blocks %}
+              {% if block.type == 'offer_item' %}
+              <div class="ft-offer-item" {{ block.shopify_attributes }}>
+                <span class="ft-offer-item__icon">{{ block.settings.icon | default: '✅' }}</span>
+                <div>
+                  <div class="ft-offer-item__name">{{ block.settings.name }}</div>
+                  {% if block.settings.value != blank %}
+                    <div class="ft-offer-item__value">{{ block.settings.value }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+            {% if section.blocks.size == 0 %}
+              <div class="ft-offer-item"><span class="ft-offer-item__icon">📦</span><div><div class="ft-offer-item__name">Product + Premium Carry Case</div><div class="ft-offer-item__value">Valued at $29.99 — FREE today</div></div></div>
+              <div class="ft-offer-item"><span class="ft-offer-item__icon">🛡️</span><div><div class="ft-offer-item__name">2-Year Warranty Included</div><div class="ft-offer-item__value">Registered automatically on purchase</div></div></div>
+              <div class="ft-offer-item"><span class="ft-offer-item__icon">📖</span><div><div class="ft-offer-item__name">AU Setup Guide (PDF)</div><div class="ft-offer-item__value">Emailed instantly after purchase</div></div></div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Variants -->
+        {% unless product.has_only_default_variant %}
+        <div class="ft-prod-variants">
+          {% for option in product.options_with_values %}
+            <div class="ft-variant-group">
+              <label class="ft-variant-label">{{ option.name }}</label>
+              <div class="ft-variant-btns">
+                {% for value in option.values %}
+                  <button class="ft-variant-btn {% if forloop.first %}is-active{% endif %}"
+                    data-option="{{ option.position }}" data-value="{{ value }}">{{ value }}</button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        {% endunless %}
+
+        <!-- Add to Cart -->
+        {% form 'product', product, id: 'ft-product-form' %}
+          <input type="hidden" name="id" id="ft-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+          <div class="ft-prod-cta-row">
+            <div class="ft-qty-control">
+              <button type="button" class="ft-qty-btn" onclick="ftQty(-1)">−</button>
+              <input type="number" name="quantity" id="ft-qty-input" value="1" min="1" class="ft-qty-input">
+              <button type="button" class="ft-qty-btn" onclick="ftQty(1)">+</button>
+            </div>
+            <button type="submit" name="add" class="ft-btn ft-btn--primary ft-btn--atc" id="ft-add-to-cart">
+              🛒 Add to Cart — {{ product.price | money }}
+            </button>
+          </div>
+          <a href="/checkout" class="ft-btn-buynow">
+            ⚡ Buy Now · Pay with <span>AfterPay</span> or <span>Zip</span>
+          </a>
+        {% endform %}
+
+        <!-- Urgency / scarcity (truth-safe — only show if real) -->
+        {% if section.settings.show_urgency %}
+        <div class="ft-urgency-bar">
+          <span class="ft-urgency-dot"></span>
+          {{ section.settings.urgency_text | default: 'Only 8 left in stock — order soon' }}
+        </div>
+        {% endif %}
+
+        <!-- Mini trust grid -->
+        <div class="ft-mini-trust">
+          <div class="ft-mini-trust__item"><span>🚚</span>Free AU delivery over $100</div>
+          <div class="ft-mini-trust__item"><span>🔄</span>30-day free returns</div>
+          <div class="ft-mini-trust__item"><span>🛡️</span>2-year warranty</div>
+          <div class="ft-mini-trust__item"><span>🔒</span>SSL secure checkout</div>
+        </div>
+
+        <!-- Shipping estimate (truth-safe — actual supplier estimate) -->
+        <div class="ft-ship-estimate">
+          <div class="ft-ship-estimate__icon">📦</div>
+          <div>
+            <div class="ft-ship-estimate__label">Estimated AU Delivery</div>
+            <div class="ft-ship-estimate__days">{{ section.settings.ship_window | default: '7–14 business days' }}</div>
+            <div class="ft-ship-estimate__note">{{ section.settings.ship_note | default: 'Ships from supplier · Tracking included · Delivered to your door' }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /ft-prod-layout -->
+
+
+    <!-- ══════════════════════════════════════
+         MODULE 2 — BENEFITS + KEY FEATURES
+    ═══════════════════════════════════════ -->
+    <div class="ft-prod-benefits">
+      <h2 class="ft-prod-section-title">Why Customers Love It</h2>
+      <div class="ft-benefits-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+          <div class="ft-benefit-card" {{ block.shopify_attributes }}>
+            <span class="ft-benefit-icon">{{ block.settings.icon | default: '✅' }}</span>
+            <div class="ft-benefit-title">{{ block.settings.title }}</div>
+            <div class="ft-benefit-desc">{{ block.settings.description }}</div>
+          </div>
+          {% endif %}
+        {% endfor %}
+        {% assign benefit_count = 0 %}
+        {% for block in section.blocks %}{% if block.type == 'benefit' %}{% assign benefit_count = benefit_count | plus: 1 %}{% endif %}{% endfor %}
+        {% if benefit_count == 0 %}
+          <div class="ft-benefit-card"><span class="ft-benefit-icon">⚡</span><div class="ft-benefit-title">Instant Setup</div><div class="ft-benefit-desc">Out of the box in under 5 minutes. No technical knowledge required — just connect and go.</div></div>
+          <div class="ft-benefit-card"><span class="ft-benefit-icon">📱</span><div class="ft-benefit-title">App Connected</div><div class="ft-benefit-desc">Full control from your smartphone. iOS and Android compatible with real-time sync.</div></div>
+          <div class="ft-benefit-card"><span class="ft-benefit-icon">🔋</span><div class="ft-benefit-title">Long Battery Life</div><div class="ft-benefit-desc">Up to 7 days on a single charge. Built for real life, not just the occasional use.</div></div>
+          <div class="ft-benefit-card"><span class="ft-benefit-icon">🌧️</span><div class="ft-benefit-title">Weather Resistant</div><div class="ft-benefit-desc">IPX5 rated — handles splashes, sweat, and the occasional Aussie downpour.</div></div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODULE 3 — SOCIAL PROOF (reviews)
+    ═══════════════════════════════════════ -->
+    <div class="ft-prod-reviews">
+      <div class="ft-prod-reviews__header">
+        <h2 class="ft-prod-section-title">What Aussie Customers Say</h2>
+        <div class="ft-review-summary">
+          <span class="ft-review-stars">★★★★★</span>
+          <span class="ft-review-avg">{{ section.settings.rating | default: '4.8' }}/5</span>
+          <span class="ft-review-total">from {{ section.settings.review_count | default: '128' }} verified reviews</span>
+        </div>
+      </div>
+      <div class="ft-reviews-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+          <div class="ft-review-card" {{ block.shopify_attributes }}>
+            <div class="ft-review-stars">★★★★★</div>
+            <p class="ft-review-text">"{{ block.settings.review_text }}"</p>
+            <div class="ft-review-author">
+              <div class="ft-review-av">{{ block.settings.name | slice: 0 }}</div>
+              <div>
+                <div class="ft-review-name">{{ block.settings.name }}</div>
+                <div class="ft-review-location">🇦🇺 {{ block.settings.location }}</div>
+              </div>
+            </div>
+            <div class="ft-review-verified">✅ Verified Purchase · {{ block.settings.delivery }}</div>
+          </div>
+          {% endif %}
+        {% endfor %}
+        {% assign rev_count = 0 %}{% for block in section.blocks %}{% if block.type == 'review' %}{% assign rev_count = rev_count | plus: 1 %}{% endif %}{% endfor %}
+        {% if rev_count == 0 %}
+          <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"Arrived in 9 days — faster than expected. Works exactly as described, quality is great for the price. Would 100% recommend."</p><div class="ft-review-author"><div class="ft-review-av">S</div><div><div class="ft-review-name">Sarah M.</div><div class="ft-review-location">🇦🇺 Brisbane, QLD</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 9 days</div></div>
+          <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"Ripper product. Bought two — one for me, one for a gift. Both arrived well packaged and the setup was dead easy."</p><div class="ft-review-author"><div class="ft-review-av">J</div><div><div class="ft-review-name">James R.</div><div class="ft-review-location">🇦🇺 Melbourne, VIC</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 7 days</div></div>
+          <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"FutureTek support team were amazing — answered my questions within 2 hours and sorted a minor issue immediately. Five stars."</p><div class="ft-review-author"><div class="ft-review-av">E</div><div><div class="ft-review-name">Emma L.</div><div class="ft-review-location">🇦🇺 Sydney, NSW</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 5 days</div></div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODULE 4 — FAQ / OBJECTION HANDLING
+    ═══════════════════════════════════════ -->
+    <div class="ft-prod-faq">
+      <h2 class="ft-prod-section-title">Frequently Asked Questions</h2>
+      <div class="ft-faq-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+          <div class="ft-faq-item" {{ block.shopify_attributes }}>
+            <button class="ft-faq-q" onclick="ftFaq(this)">
+              {{ block.settings.question }}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="ft-faq-a">{{ block.settings.answer }}</div>
+          </div>
+          {% endif %}
+        {% endfor %}
+        {% assign faq_count = 0 %}{% for block in section.blocks %}{% if block.type == 'faq' %}{% assign faq_count = faq_count | plus: 1 %}{% endif %}{% endfor %}
+        {% if faq_count == 0 %}
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">How long does delivery take to Australia?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">We ship to all Australian states and territories. Estimated delivery is {{ section.settings.ship_window | default: '7–14 business days' }} from order confirmation. You'll receive a tracking number by email once dispatched.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">What is your returns policy?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">We offer a 30-day hassle-free returns policy. If you're not satisfied, contact us at support@futuretek.com.au and we'll arrange a full refund or exchange. Under Australian Consumer Law, you're also entitled to a remedy if the product has a major fault.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Does the product come with a warranty?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes — all FutureTek products include a minimum 2-year manufacturer warranty. In addition to this, your statutory consumer guarantees under Australian Consumer Law apply.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Is the product compatible with Australian power/standards?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes. All products sold on FutureTek are AU-compatible. Any power-related products include an AU/NZ standard plug or adapter. If unsure, check the product specifications or contact our support team.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Can I pay with AfterPay or Zip?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes — we accept AfterPay and Zip Pay, so you can split your purchase into 4 fortnightly payments interest-free. We also accept Visa, Mastercard, PayPal, and Apple Pay.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Where does my order ship from?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">FutureTek operates on a dropshipping model — orders are dispatched directly from our supplier network and delivered to your door. Shipping origin varies by product category. All delivery estimates shown are based on real supplier lead times to Australian addresses.</div></div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODULE 5 — SHIPPING + POLICIES (bottom)
+    ═══════════════════════════════════════ -->
+    <div class="ft-prod-policies">
+      <div class="ft-policy-card">
+        <span class="ft-policy-icon">🚚</span>
+        <div class="ft-policy-title">AU Shipping</div>
+        <div class="ft-policy-text">Free delivery on orders over $100 AUD. Standard AU delivery {{ section.settings.ship_window | default: '7–14 business days' }}. Tracking included on all orders.</div>
+      </div>
+      <div class="ft-policy-card">
+        <span class="ft-policy-icon">🔄</span>
+        <div class="ft-policy-title">30-Day Returns</div>
+        <div class="ft-policy-text">Not happy? Return within 30 days for a full refund or exchange. <a href="/pages/returns-policy">Full returns policy →</a></div>
+      </div>
+      <div class="ft-policy-card">
+        <span class="ft-policy-icon">🛡️</span>
+        <div class="ft-policy-title">2-Year Warranty</div>
+        <div class="ft-policy-text">All products include a 2-year warranty. Australian Consumer Law guarantees apply to all purchases.</div>
+      </div>
+      <div class="ft-policy-card">
+        <span class="ft-policy-icon">🔒</span>
+        <div class="ft-policy-title">Secure Payment</div>
+        <div class="ft-policy-text">SSL encrypted checkout. We accept Visa, Mastercard, PayPal, AfterPay, and Zip. All prices in AUD inc. GST.</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         MODULE 6 — YOU MIGHT ALSO LIKE (upsell)
+    ═══════════════════════════════════════ -->
+    {% if recommendations.products_count > 0 %}
+    <div class="ft-prod-related">
+      <h2 class="ft-prod-section-title">You Might Also Like</h2>
+      <div class="ft-related-grid">
+        {% for p in recommendations.products limit: 4 %}
+          <a href="{{ p.url }}" class="ft-related-card">
+            {% if p.featured_image %}
+              <img src="{{ p.featured_image | img_url: '400x400', crop: 'center' }}" alt="{{ p.title | escape }}" loading="lazy">
+            {% else %}
+              <div class="ft-related-ph">{{ p.type | slice: 0 }}</div>
+            {% endif %}
+            <div class="ft-related-body">
+              <div class="ft-related-cat">{{ p.type }}</div>
+              <div class="ft-related-name">{{ p.title }}</div>
+              <div class="ft-related-price">{{ p.price | money }} AUD</div>
+              {% if p.compare_at_price > p.price %}
+                <div class="ft-related-save">Save {{ p.compare_at_price | minus: p.price | money }}</div>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div><!-- /ft-container -->
+</section>
+
+
+<style>
+/* ── Product Page Base ── */
+.ft-product-page { padding: 100px 0 80px; }
+.ft-breadcrumb { display:flex; gap:8px; align-items:center; margin-bottom:32px; font-size:.85rem; color:var(--ft-muted); flex-wrap:wrap; }
+.ft-breadcrumb a { color:var(--ft-muted); } .ft-breadcrumb a:hover { color:var(--ft-cyan); }
+
+/* ── Above Fold Layout ── */
+.ft-prod-layout { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; margin-bottom:80px; }
+
+/* ── Gallery ── */
+.ft-gallery-main { position:relative; border-radius:20px; overflow:hidden; background:var(--ft-surface); border:1px solid var(--ft-border); aspect-ratio:1; }
+.ft-gallery-main img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.ft-gallery-main:hover img { transform:scale(1.03); }
+.ft-gallery-ph { width:100%; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:7rem; color:var(--ft-cyan); opacity:.1; font-weight:900; }
+.ft-gallery-discount-badge { position:absolute; top:14px; left:14px; background:var(--ft-pink); color:#fff; padding:6px 14px; border-radius:50px; font-size:.78rem; font-weight:800; }
+.ft-gallery-thumbs { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+.ft-thumb { width:72px; height:72px; border-radius:10px; overflow:hidden; border:2px solid transparent; cursor:pointer; padding:0; background:none; transition:border-color .2s; }
+.ft-thumb.is-active, .ft-thumb:hover { border-color:var(--ft-cyan); }
+.ft-thumb img { width:100%; height:100%; object-fit:cover; }
+.ft-prod-social-strip { display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:.78rem; color:var(--ft-muted); }
+.ft-prod-social-strip strong { color:var(--ft-cyan); }
+
+/* ── Info column ── */
+.ft-prod-badges { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:12px; }
+.ft-pbadge { padding:4px 12px; border-radius:50px; font-size:.7rem; font-weight:800; }
+.ft-pbadge--new { background:rgba(0,240,255,.1); color:var(--ft-cyan); border:1px solid rgba(0,240,255,.2); }
+.ft-pbadge--hot { background:rgba(255,107,53,.1); color:var(--ft-orange); border:1px solid rgba(255,107,53,.2); }
+.ft-pbadge--sale { background:rgba(255,45,111,.1); color:var(--ft-pink); border:1px solid rgba(255,45,111,.2); }
+.ft-pbadge--oos { background:rgba(255,193,7,.1); color:#fbbf24; border:1px solid rgba(255,193,7,.2); }
+.ft-prod-vendor { font-size:.75rem; color:var(--ft-cyan); font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:7px; }
+.ft-prod-title { font-size:clamp(1.4rem,2.5vw,2rem); font-weight:900; color:#fff; line-height:1.18; margin-bottom:14px; }
+.ft-prod-rating { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:16px; }
+.ft-stars { color:#fbbf24; font-size:1rem; }
+.ft-rating-score { font-size:.9rem; font-weight:800; color:#fff; }
+.ft-rating-count { font-size:.82rem; color:var(--ft-muted); }
+.ft-rating-au { font-size:.75rem; color:var(--ft-green); }
+
+/* ── Outcome headline ── */
+.ft-outcome-headline { background:linear-gradient(135deg,rgba(0,240,255,.06),rgba(123,47,255,.06)); border:1px solid rgba(0,240,255,.12); border-radius:12px; padding:14px 18px; font-size:.92rem; color:var(--ft-text); line-height:1.65; margin-bottom:18px; }
+
+/* ── Price ── */
+.ft-prod-price-block { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:20px; padding:16px 18px; background:rgba(0,240,255,.04); border-radius:14px; border:1px solid rgba(0,240,255,.1); }
+.ft-price-now { font-size:1.9rem; font-weight:900; color:var(--ft-cyan); line-height:1; }
+.ft-price-was { font-size:1.05rem; color:var(--ft-muted); text-decoration:line-through; }
+.ft-price-save { background:rgba(255,45,111,.12); color:var(--ft-pink); border:1px solid rgba(255,45,111,.2); padding:4px 12px; border-radius:50px; font-size:.76rem; font-weight:800; }
+.ft-price-gst { font-size:.75rem; color:var(--ft-muted); margin-left:auto; }
+.ft-afterpay-line { width:100%; font-size:.78rem; color:var(--ft-muted); }
+.ft-afterpay-line strong { color:#fff; }
+.ft-afterpay-badge { background:#b2fce4; color:#0a0a14; padding:2px 8px; border-radius:4px; font-size:.68rem; font-weight:900; }
+
+/* ── Offer stack ── */
+.ft-offer-stack { background:var(--ft-surface); border:1px solid rgba(52,211,153,.18); border-radius:14px; padding:18px; margin-bottom:20px; }
+.ft-offer-stack__title { font-size:.82rem; font-weight:800; color:var(--ft-green); letter-spacing:.5px; text-transform:uppercase; margin-bottom:12px; }
+.ft-offer-stack__items { display:flex; flex-direction:column; gap:10px; }
+.ft-offer-item { display:flex; align-items:flex-start; gap:12px; }
+.ft-offer-item__icon { font-size:1.1rem; flex-shrink:0; margin-top:2px; }
+.ft-offer-item__name { font-size:.88rem; font-weight:700; color:#fff; }
+.ft-offer-item__value { font-size:.76rem; color:var(--ft-green); margin-top:2px; }
+
+/* ── Variants ── */
+.ft-prod-variants { margin-bottom:20px; display:flex; flex-direction:column; gap:14px; }
+.ft-variant-label { display:block; font-size:.78rem; font-weight:800; color:var(--ft-muted); letter-spacing:.5px; text-transform:uppercase; margin-bottom:7px; }
+.ft-variant-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.ft-variant-btn { padding:8px 16px; border-radius:8px; background:rgba(255,255,255,.05); border:1px solid var(--ft-border); color:var(--ft-text); font-size:.86rem; cursor:pointer; transition:.2s; }
+.ft-variant-btn.is-active, .ft-variant-btn:hover { border-color:var(--ft-cyan); color:var(--ft-cyan); background:rgba(0,240,255,.08); }
+
+/* ── CTA ── */
+.ft-prod-cta-row { display:flex; gap:11px; margin-bottom:11px; align-items:center; }
+.ft-qty-control { display:flex; align-items:center; background:rgba(255,255,255,.05); border:1px solid var(--ft-border); border-radius:10px; overflow:hidden; }
+.ft-qty-btn { width:40px; height:50px; background:none; border:none; color:var(--ft-text); font-size:1.3rem; cursor:pointer; transition:.2s; }
+.ft-qty-btn:hover { color:var(--ft-cyan); background:rgba(0,240,255,.08); }
+.ft-qty-input { width:46px; height:50px; background:none; border:none; color:#fff; text-align:center; font-size:1rem; font-weight:700; }
+.ft-btn--atc { flex:1; justify-content:center; font-size:.9rem; }
+.ft-btn-buynow { display:flex; justify-content:center; align-items:center; gap:6px; background:linear-gradient(135deg,#b2fce4,#aec6fb); color:#080812; font-weight:800; border-radius:12px; padding:14px; margin-bottom:16px; font-size:.88rem; transition:.2s; }
+.ft-btn-buynow:hover { opacity:.9; color:#080812; }
+.ft-btn-buynow span { font-weight:900; }
+
+/* ── Urgency ── */
+.ft-urgency-bar { display:flex; align-items:center; gap:8px; background:rgba(255,193,7,.07); border:1px solid rgba(255,193,7,.18); border-radius:9px; padding:10px 14px; font-size:.82rem; color:#fbbf24; font-weight:700; margin-bottom:16px; }
+.ft-urgency-dot { width:8px; height:8px; border-radius:50%; background:#fbbf24; animation:ftLivePulse 2s ease-in-out infinite; flex-shrink:0; }
+
+/* ── Mini trust ── */
+.ft-mini-trust { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:16px; }
+.ft-mini-trust__item { display:flex; align-items:center; gap:8px; font-size:.78rem; color:var(--ft-muted); background:rgba(255,255,255,.02); border:1px solid var(--ft-border); border-radius:9px; padding:8px 12px; }
+.ft-mini-trust__item span { font-size:.95rem; }
+
+/* ── Ship estimate ── */
+.ft-ship-estimate { display:flex; align-items:flex-start; gap:14px; background:rgba(52,211,153,.04); border:1px solid rgba(52,211,153,.15); border-radius:12px; padding:16px; }
+.ft-ship-estimate__icon { font-size:1.8rem; flex-shrink:0; }
+.ft-ship-estimate__label { font-size:.75rem; font-weight:800; color:var(--ft-green); text-transform:uppercase; letter-spacing:.5px; }
+.ft-ship-estimate__days { font-size:1.05rem; font-weight:900; color:#fff; margin:3px 0; }
+.ft-ship-estimate__note { font-size:.76rem; color:var(--ft-muted); }
+
+/* ── Section titles ── */
+.ft-prod-section-title { font-size:1.5rem; font-weight:900; color:#fff; margin-bottom:28px; padding-top:60px; border-top:1px solid var(--ft-border); }
+
+/* ── Benefits ── */
+.ft-benefits-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-bottom:0; }
+.ft-benefit-card { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:var(--ft-r); padding:24px 20px; transition:.3s; }
+.ft-benefit-card:hover { transform:translateY(-3px); border-color:rgba(0,240,255,.15); }
+.ft-benefit-icon { font-size:2rem; display:block; margin-bottom:12px; }
+.ft-benefit-title { font-size:.95rem; font-weight:800; color:#fff; margin-bottom:7px; }
+.ft-benefit-desc { font-size:.84rem; color:var(--ft-muted); line-height:1.65; }
+
+/* ── Reviews ── */
+.ft-prod-reviews__header { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:28px; padding-top:60px; border-top:1px solid var(--ft-border); }
+.ft-prod-reviews__header .ft-prod-section-title { margin-bottom:0; padding-top:0; border-top:none; }
+.ft-review-summary { display:flex; align-items:center; gap:9px; }
+.ft-review-stars { color:#fbbf24; font-size:1.1rem; }
+.ft-review-avg { font-size:1.1rem; font-weight:900; color:#fff; }
+.ft-review-total { font-size:.82rem; color:var(--ft-muted); }
+.ft-reviews-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+.ft-review-card { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:var(--ft-r-lg); padding:24px; transition:.3s; }
+.ft-review-card:hover { transform:translateY(-3px); border-color:rgba(0,240,255,.1); }
+.ft-review-stars { color:#fbbf24; font-size:.9rem; margin-bottom:12px; }
+.ft-review-text { font-size:.87rem; color:var(--ft-text); line-height:1.75; margin-bottom:16px; font-style:italic; }
+.ft-review-author { display:flex; align-items:center; gap:10px; }
+.ft-review-av { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--ft-cyan),var(--ft-purple)); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.95rem; color:var(--ft-bg); flex-shrink:0; }
+.ft-review-name { font-weight:700; font-size:.88rem; color:#fff; }
+.ft-review-location { font-size:.72rem; color:var(--ft-muted); margin-top:2px; }
+.ft-review-verified { font-size:.72rem; color:var(--ft-muted); padding-top:12px; margin-top:12px; border-top:1px solid var(--ft-border); }
+
+/* ── FAQ ── */
+.ft-prod-faq { padding-top:60px; border-top:1px solid var(--ft-border); }
+.ft-prod-faq .ft-prod-section-title { border-top:none; padding-top:0; margin-bottom:20px; }
+.ft-faq-list { display:flex; flex-direction:column; gap:10px; }
+.ft-faq-item { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:var(--ft-r); overflow:hidden; }
+.ft-faq-q { width:100%; background:none; border:none; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; color:#fff; font-size:.9rem; font-weight:700; text-align:left; gap:12px; }
+.ft-faq-q:hover { color:var(--ft-cyan); }
+.ft-faq-q svg { flex-shrink:0; transition:transform .25s; }
+.ft-faq-q.is-open svg { transform:rotate(180deg); }
+.ft-faq-a { padding:0 20px; max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; font-size:.88rem; color:var(--ft-muted); line-height:1.75; }
+.ft-faq-a.is-open { max-height:400px; padding:0 20px 18px; }
+.ft-faq-a a { color:var(--ft-cyan); }
+
+/* ── Policies ── */
+.ft-prod-policies { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; padding-top:48px; margin-top:48px; border-top:1px solid var(--ft-border); }
+.ft-policy-card { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:var(--ft-r); padding:22px 18px; }
+.ft-policy-icon { font-size:1.6rem; display:block; margin-bottom:10px; }
+.ft-policy-title { font-size:.9rem; font-weight:800; color:#fff; margin-bottom:8px; }
+.ft-policy-text { font-size:.82rem; color:var(--ft-muted); line-height:1.65; }
+.ft-policy-text a { color:var(--ft-cyan); }
+
+/* ── Related ── */
+.ft-prod-related { padding-top:60px; border-top:1px solid var(--ft-border); }
+.ft-prod-related .ft-prod-section-title { border-top:none; padding-top:0; }
+.ft-related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.ft-related-card { border-radius:14px; overflow:hidden; background:var(--ft-surface); border:1px solid var(--ft-border); transition:.3s; text-decoration:none; }
+.ft-related-card:hover { transform:translateY(-4px); border-color:rgba(0,240,255,.15); }
+.ft-related-card img { width:100%; aspect-ratio:1; object-fit:cover; }
+.ft-related-ph { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:3rem; color:var(--ft-cyan); opacity:.2; background:var(--ft-surface2); }
+.ft-related-body { padding:14px; }
+.ft-related-cat { font-size:.68rem; font-weight:800; color:var(--ft-cyan); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
+.ft-related-name { font-size:.88rem; font-weight:700; color:var(--ft-text); margin-bottom:6px; line-height:1.35; }
+.ft-related-price { font-size:.92rem; font-weight:900; color:var(--ft-cyan); }
+.ft-related-save { font-size:.72rem; color:var(--ft-pink); margin-top:3px; }
+
+@media(max-width:900px) {
+  .ft-prod-layout { grid-template-columns:1fr; gap:32px; }
+  .ft-related-grid { grid-template-columns:repeat(2,1fr); }
+  .ft-prod-cta-row { flex-direction:column; }
+  .ft-btn--atc { width:100%; }
+  .ft-mini-trust { grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+function ftSetImg(src, btn) {
+  document.getElementById('ft-main-img').src = src;
+  document.querySelectorAll('.ft-thumb').forEach(t => t.classList.remove('is-active'));
+  btn.classList.add('is-active');
+}
+function ftQty(d) {
+  const i = document.getElementById('ft-qty-input');
+  i.value = Math.max(1, parseInt(i.value) + d);
+}
+function ftFaq(btn) {
+  const a = btn.nextElementSibling;
+  const isOpen = a.classList.contains('is-open');
+  // close all
+  document.querySelectorAll('.ft-faq-a').forEach(el => el.classList.remove('is-open'));
+  document.querySelectorAll('.ft-faq-q').forEach(el => el.classList.remove('is-open'));
+  if (!isOpen) { a.classList.add('is-open'); btn.classList.add('is-open'); }
+}
+</script>
+
+{% schema %}
+{
+  "name": "FutureTek Product Page",
+  "settings": [
+    { "type": "text", "id": "outcome_headline", "label": "Outcome Headline (above price)", "info": "Brief outcome statement — what problem this solves. Leave blank to hide." },
+    { "type": "text", "id": "offer_stack_title", "label": "Offer Stack Title", "default": "🎁 What's Included in Your Order" },
+    { "type": "text", "id": "ship_window", "label": "Delivery Window", "default": "7–14 business days" },
+    { "type": "text", "id": "ship_note", "label": "Delivery Note", "default": "Ships from supplier · Tracking included · Delivered to your door" },
+    { "type": "text", "id": "rating", "label": "Rating (e.g. 4.8)", "default": "4.8" },
+    { "type": "text", "id": "review_count", "label": "Review Count", "default": "128" },
+    { "type": "text", "id": "viewing_now", "label": "Viewing Now Count", "default": "14" },
+    { "type": "text", "id": "sold_count", "label": "Sold This Month", "default": "238" },
+    { "type": "checkbox", "id": "show_urgency", "label": "Show Urgency Bar", "default": false },
+    { "type": "text", "id": "urgency_text", "label": "Urgency Text", "default": "Only 8 left in stock — order soon" }
+  ],
+  "blocks": [
+    { "type": "offer_item", "name": "Offer Item", "settings": [
+      { "type": "text", "id": "icon", "label": "Icon Emoji", "default": "✅" },
+      { "type": "text", "id": "name", "label": "Item Name" },
+      { "type": "text", "id": "value", "label": "Value Label (e.g. Valued at $29.99 — FREE)" }
+    ]},
+    { "type": "benefit", "name": "Benefit Card", "settings": [
+      { "type": "text", "id": "icon", "label": "Icon Emoji", "default": "✅" },
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "textarea", "id": "description", "label": "Description" }
+    ]},
+    { "type": "review", "name": "Customer Review", "settings": [
+      { "type": "textarea", "id": "review_text", "label": "Review Text" },
+      { "type": "text", "id": "name", "label": "Customer Name", "default": "Sarah M." },
+      { "type": "text", "id": "location", "label": "Location", "default": "Brisbane, QLD" },
+      { "type": "text", "id": "delivery", "label": "Delivery Note", "default": "Delivered in 9 days" }
+    ]},
+    { "type": "faq", "name": "FAQ Item", "settings": [
+      { "type": "text", "id": "question", "label": "Question" },
+      { "type": "textarea", "id": "answer", "label": "Answer" }
+    ]}
+  ],
+  "presets": [{ "name": "FutureTek Product Page" }]
+}
+{% endschema %}

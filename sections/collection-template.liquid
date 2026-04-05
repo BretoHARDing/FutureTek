@@ -1,0 +1,198 @@
+<section class="collection-page">
+  <div class="container">
+
+    <!-- Collection Header -->
+    <div class="collection-header">
+      <div class="collection-header-content">
+        <span class="section-tag">{{ collection.title }}</span>
+        <h1 class="collection-title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <p class="collection-desc">{{ collection.description }}</p>
+        {% endif %}
+        <div class="collection-meta">
+          <span>{{ collection.products_count }} products</span>
+          <span>•</span>
+          <span>🇦🇺 Ships to Australia</span>
+          <span>•</span>
+          <span>AUD pricing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters & Sort Bar -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-btn" onclick="filterProducts('new', this)">New Arrivals</button>
+        <button class="filter-btn" onclick="filterProducts('bestseller', this)">Best Sellers</button>
+        <button class="filter-btn" onclick="filterProducts('sale', this)">On Sale</button>
+      </div>
+      <div class="filter-right">
+        <select class="sort-select" onchange="sortProducts(this.value)">
+          <option value="featured">Sort: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="title-asc">Name: A–Z</option>
+          <option value="created-desc">Newest First</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="collection-grid" id="collection-grid">
+      {% paginate collection.products by section.settings.products_per_page %}
+        {% for product in collection.products %}
+          <div class="col-product-card" data-tags="{{ product.tags | join: ',' }}">
+            <a href="{{ product.url }}" class="col-product-link">
+              <div class="col-product-img">
+                {% if product.featured_image %}
+                  <img src="{{ product.featured_image | img_url: '500x500', crop: 'center' }}"
+                       alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+                {% else %}
+                  <div class="col-product-placeholder">{{ product.title | slice: 0 }}</div>
+                {% endif %}
+                <div class="col-product-overlay">
+                  <span class="col-quick-view">Quick View</span>
+                </div>
+                {% if product.compare_at_price > product.price %}
+                  <span class="col-badge col-badge-sale">
+                    -{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%
+                  </span>
+                {% elsif product.tags contains 'new' %}
+                  <span class="col-badge col-badge-new">New</span>
+                {% elsif product.tags contains 'bestseller' %}
+                  <span class="col-badge col-badge-hot">🔥</span>
+                {% endif %}
+                <button class="col-wishlist" aria-label="Wishlist">♡</button>
+              </div>
+              <div class="col-product-info">
+                <div class="col-product-vendor">{{ product.vendor }}</div>
+                <h3 class="col-product-name">{{ product.title }}</h3>
+                <div class="col-product-rating">★★★★★ <span>({{ product.metafields.reviews.count | default: '0' }})</span></div>
+                <div class="col-product-price">
+                  <span class="col-price-current">{{ product.price | money }} AUD</span>
+                  {% if product.compare_at_price > product.price %}
+                    <span class="col-price-was">{{ product.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+                <div class="col-ship-note">🚚 Ships {{ section.settings.ship_days }}</div>
+              </div>
+            </a>
+            <form method="post" action="/cart/add">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="col-add-btn">Add to Cart</button>
+            </form>
+          </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if paginate.pages > 1 %}
+          <div class="pagination">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+
+    {% if collection.products.size == 0 %}
+      <div class="collection-empty">
+        <div class="empty-icon">🔍</div>
+        <h3>No products found</h3>
+        <p>Check back soon — we're adding new tech products daily!</p>
+        <a href="/collections/all" class="btn btn-primary">Browse All Products</a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+.collection-page { padding: 100px 0 80px; }
+.collection-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.collection-title { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; color: #fff; margin: 10px 0 12px; }
+.collection-desc { color: var(--color-text-muted); font-size: .95rem; line-height: 1.65; margin-bottom: 14px; max-width: 640px; }
+.collection-meta { display: flex; gap: 10px; align-items: center; color: var(--color-text-muted); font-size: .82rem; }
+
+.filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.filter-left { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-btn { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: var(--color-text-muted); padding: 8px 18px; border-radius: 50px; font-size: .82rem; font-weight: 600; cursor: pointer; transition: .2s; }
+.filter-btn.active, .filter-btn:hover { border-color: var(--color-primary); color: var(--color-primary); background: rgba(0,240,255,.07); }
+.sort-select { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); color: var(--color-text-muted); padding: 8px 16px; border-radius: 8px; font-size: .82rem; cursor: pointer; outline: none; }
+.sort-select:focus { border-color: var(--color-primary); }
+
+.collection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.col-product-card { background: var(--color-surface); border-radius: 18px; border: 1px solid rgba(255,255,255,.06); overflow: hidden; transition: .3s; display: flex; flex-direction: column; }
+.col-product-card:hover { transform: translateY(-5px); border-color: rgba(0,240,255,.18); box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 20px rgba(0,240,255,.07); }
+.col-product-link { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
+.col-product-img { position: relative; aspect-ratio: 1; overflow: hidden; }
+.col-product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.col-product-card:hover .col-product-img img { transform: scale(1.05); }
+.col-product-placeholder { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--color-primary); opacity: .1; background: rgba(255,255,255,.02); }
+.col-product-overlay { position: absolute; inset: 0; background: rgba(10,10,20,.75); display: flex; align-items: center; justify-content: center; opacity: 0; transition: .3s; }
+.col-product-card:hover .col-product-overlay { opacity: 1; }
+.col-quick-view { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 8px 20px; border-radius: 50px; font-size: .8rem; font-weight: 600; backdrop-filter: blur(10px); }
+.col-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 50px; font-size: .7rem; font-weight: 700; }
+.col-badge-sale { background: var(--color-accent); color: #fff; }
+.col-badge-new { background: var(--color-primary); color: var(--color-bg); }
+.col-badge-hot { background: #ff643c; font-size: .9rem; padding: 4px 8px; }
+.col-wishlist { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 50%; background: rgba(10,10,20,.7); border: 1px solid rgba(255,255,255,.15); color: #fff; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: .2s; backdrop-filter: blur(10px); }
+.col-wishlist:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+.col-product-info { padding: 16px; flex: 1; }
+.col-product-vendor { font-size: .7rem; color: var(--color-primary); font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 5px; }
+.col-product-name { font-size: .92rem; font-weight: 700; color: #fff; line-height: 1.35; margin-bottom: 7px; }
+.col-product-rating { font-size: .78rem; color: #fbbf24; margin-bottom: 8px; }
+.col-product-rating span { color: var(--color-text-muted); }
+.col-product-price { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.col-price-current { font-size: 1rem; font-weight: 800; color: var(--color-primary); }
+.col-price-was { font-size: .82rem; color: var(--color-text-muted); text-decoration: line-through; }
+.col-ship-note { font-size: .72rem; color: var(--color-text-muted); }
+.col-add-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border: none; border-radius: 0 0 18px 18px; color: #fff; font-weight: 700; font-size: .88rem; cursor: pointer; transition: .2s; letter-spacing: .3px; }
+.col-add-btn:hover { opacity: .9; }
+
+.pagination { grid-column: 1/-1; display: flex; justify-content: center; gap: 8px; padding: 20px 0; }
+.pagination a, .pagination span { padding: 8px 16px; border-radius: 8px; background: var(--color-surface); border: 1px solid rgba(255,255,255,.08); color: var(--color-text-muted); font-size: .88rem; }
+.pagination .current { border-color: var(--color-primary); color: var(--color-primary); }
+
+.collection-empty { grid-column: 1/-1; text-align: center; padding: 80px 20px; }
+.empty-icon { font-size: 4rem; margin-bottom: 20px; }
+.collection-empty h3 { font-size: 1.4rem; color: #fff; margin-bottom: 10px; }
+.collection-empty p { color: var(--color-text-muted); margin-bottom: 24px; }
+
+@media(max-width: 600px) { .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .filter-bar { flex-direction: column; align-items: flex-start; } }
+</style>
+
+<script>
+function filterProducts(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.col-product-card').forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+function sortProducts(val) {
+  const grid = document.getElementById('collection-grid');
+  const cards = [...grid.querySelectorAll('.col-product-card')];
+  cards.sort((a, b) => {
+    if (val === 'price-asc') return parseFloat(a.dataset.price||0) - parseFloat(b.dataset.price||0);
+    if (val === 'price-desc') return parseFloat(b.dataset.price||0) - parseFloat(a.dataset.price||0);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+</script>
+
+{% schema %}
+{
+  "name": "Collection Template",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "text", "id": "ship_days", "label": "Shipping Note", "default": "in 5–14 days to AU" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,222 @@
+<!-- ============================================================
+     FUTURETECH — HERO SECTION
+     Full-screen animated hero with floating tech dashboard
+============================================================ -->
+
+{% assign hero_title = section.settings.hero_title | default: 'Tech That Powers Your Whole Life' %}
+{% assign hero_subtitle = section.settings.hero_subtitle | default: 'Electronics · Fitness · Pet Tech · Wellbeing — discover the smartest products for every part of your lifestyle. Delivered fast across Australia.' %}
+{% assign cta_primary_text = section.settings.cta_primary_text | default: 'Shop All Tech' %}
+{% assign cta_primary_url = section.settings.cta_primary_url | default: '/collections/all' %}
+{% assign cta_secondary_text = section.settings.cta_secondary_text | default: 'Browse Categories' %}
+{% assign cta_secondary_url = section.settings.cta_secondary_url | default: '#categories' %}
+{% assign badge_text = section.settings.badge_text | default: "Australia's #1 Tech Dropshipping Store" %}
+
+<section class="ft-hero" id="hero">
+  <div class="ft-hero__bg">
+    <div class="ft-hero__grid"></div>
+    <div class="ft-hero__glow ft-hero__glow--1"></div>
+    <div class="ft-hero__glow ft-hero__glow--2"></div>
+  </div>
+
+  <div class="ft-container ft-hero__inner">
+    <!-- Copy -->
+    <div class="ft-hero__copy">
+      <div class="ft-hero__live-badge">
+        <span class="ft-hero__live-dot"></span>
+        {{ badge_text }}
+      </div>
+
+      <h1 class="ft-hero__h1">
+        {{ hero_title | split: ' Your' | first }}
+        <em>{% if hero_title contains 'Your' %}Your{{ hero_title | split: 'Your' | last }}{% endif %}</em>
+      </h1>
+
+      <p class="ft-hero__desc">{{ hero_subtitle }}</p>
+
+      <div class="ft-hero__tags">
+        {% for block in section.blocks %}
+          {% if block.type == 'category_tag' %}
+            <a href="{{ block.settings.url | default: '#' }}" class="ft-hero__tag">
+              {{ block.settings.emoji }} {{ block.settings.label }}
+            </a>
+          {% endif %}
+        {% endfor %}
+        {% if section.blocks.size == 0 %}
+          <a href="/collections/electronics" class="ft-hero__tag">💻 Electronics</a>
+          <a href="/collections/fitness" class="ft-hero__tag">💪 Fitness Tech</a>
+          <a href="/collections/pet-tech" class="ft-hero__tag">🐾 Pet Technology</a>
+          <a href="/collections/wellbeing" class="ft-hero__tag">🧘 Wellbeing</a>
+        {% endif %}
+      </div>
+
+      <div class="ft-hero__cta">
+        <a href="{{ cta_primary_url }}" class="ft-btn ft-btn--primary">
+          {{ cta_primary_text }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="{{ cta_secondary_url }}" class="ft-btn ft-btn--outline">{{ cta_secondary_text }}</a>
+      </div>
+
+      <div class="ft-hero__metrics">
+        <div class="ft-hero__metric">
+          <span class="ft-hero__metric-num">{{ section.settings.stat_products | default: '2,000+' }}</span>
+          <span class="ft-hero__metric-label">Tech Products</span>
+        </div>
+        <div class="ft-hero__metric-sep"></div>
+        <div class="ft-hero__metric">
+          <span class="ft-hero__metric-num">{{ section.settings.stat_satisfaction | default: '98%' }}</span>
+          <span class="ft-hero__metric-label">Happy Customers</span>
+        </div>
+        <div class="ft-hero__metric-sep"></div>
+        <div class="ft-hero__metric">
+          <span class="ft-hero__metric-num">24/7</span>
+          <span class="ft-hero__metric-label">Expert Support</span>
+        </div>
+        <div class="ft-hero__metric-sep"></div>
+        <div class="ft-hero__metric">
+          <span class="ft-hero__metric-num">{{ section.settings.stat_subscribers | default: '18K+' }}</span>
+          <span class="ft-hero__metric-label">Aussie Subscribers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual dashboard -->
+    <div class="ft-hero__visual">
+      <div class="ft-orbit ft-orbit--1"></div>
+      <div class="ft-orbit ft-orbit--2"></div>
+      <div class="ft-orbit ft-orbit--3"></div>
+
+      <div class="ft-dash-card">
+        <div class="ft-dash-dots">
+          <span class="ft-dash-dot ft-dash-dot--r"></span>
+          <span class="ft-dash-dot ft-dash-dot--y"></span>
+          <span class="ft-dash-dot ft-dash-dot--g"></span>
+        </div>
+        <div class="ft-dash-row"><span class="ft-dash-emoji">❤️</span><div><div class="ft-dash-val">72 BPM</div><div class="ft-dash-lbl">Heart Rate</div></div></div>
+        <div class="ft-dash-row"><span class="ft-dash-emoji">🔥</span><div><div class="ft-dash-val">1,240 cal</div><div class="ft-dash-lbl">Daily Burn</div></div></div>
+        <div class="ft-dash-row"><span class="ft-dash-emoji">😴</span><div><div class="ft-dash-val">7h 42m</div><div class="ft-dash-lbl">Sleep Score</div></div></div>
+        <div class="ft-dash-chart">
+          <div class="ft-bar" style="height:40%"></div>
+          <div class="ft-bar" style="height:65%"></div>
+          <div class="ft-bar" style="height:50%"></div>
+          <div class="ft-bar" style="height:85%"></div>
+          <div class="ft-bar" style="height:70%"></div>
+          <div class="ft-bar ft-bar--hi" style="height:95%"></div>
+        </div>
+      </div>
+
+      <div class="ft-float-card ft-float-card--1"><span>📍</span><div><div class="ft-float-title">Pet GPS Active</div><div class="ft-float-sub">Buddy · 98% battery</div></div></div>
+      <div class="ft-float-card ft-float-card--2"><span>⚡</span><div><div class="ft-float-title">45W Fast Charge</div><div class="ft-float-sub">0→100% in 52 min</div></div></div>
+      <div class="ft-float-card ft-float-card--3"><span>🛡️</span><div><div class="ft-float-title">2-Year Warranty</div><div class="ft-float-sub">All FutureTek products</div></div></div>
+      <div class="ft-float-card ft-float-card--4"><span>🇦🇺</span><div><div class="ft-float-title">Ships Aus-wide</div><div class="ft-float-sub">Free over $100 AUD</div></div></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FutureTek Hero",
+  "tag": "section",
+  "class": "ft-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "Tech That Powers Your Whole Life"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Electronics · Fitness · Pet Tech · Wellbeing — discover the smartest products for every part of your lifestyle. Delivered fast across Australia."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Live Badge Text",
+      "default": "Australia's #1 Tech Dropshipping Store"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_text",
+      "label": "Primary CTA Text",
+      "default": "Shop All Tech"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "Secondary CTA Text",
+      "default": "Browse Categories"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "Stats Bar"
+    },
+    {
+      "type": "text",
+      "id": "stat_products",
+      "label": "Products Count",
+      "default": "2,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_satisfaction",
+      "label": "Satisfaction Rate",
+      "default": "98%"
+    },
+    {
+      "type": "text",
+      "id": "stat_subscribers",
+      "label": "Subscribers",
+      "default": "18K+"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_tag",
+      "name": "Category Tag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "default": "💻"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Electronics"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FutureTek Hero",
+      "blocks": [
+        { "type": "category_tag", "settings": { "emoji": "💻", "label": "Electronics" } },
+        { "type": "category_tag", "settings": { "emoji": "💪", "label": "Fitness Tech" } },
+        { "type": "category_tag", "settings": { "emoji": "🐾", "label": "Pet Technology" } },
+        { "type": "category_tag", "settings": { "emoji": "🧘", "label": "Wellbeing" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

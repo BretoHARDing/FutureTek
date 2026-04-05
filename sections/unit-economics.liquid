@@ -1,0 +1,397 @@
+<!-- ============================================================
+     FUTURETECH — UNIT ECONOMICS DASHBOARD SECTION
+     Operator Playbook: CAC, MER, margin, refund/dispute rates
+     Autonomy score tracker + bottleneck radar
+============================================================ -->
+
+<section class="ft-ue section-pad" id="unit-economics">
+  <div class="ft-container">
+
+    <div class="ft-section-head">
+      <span class="ft-label">{{ section.settings.label | default: 'Store Intelligence' }}</span>
+      <h2 class="ft-section-title">{{ section.settings.heading | default: 'Unit Economics Dashboard' }}</h2>
+      <p class="ft-section-sub">{{ section.settings.subheading | default: 'Track the metrics that matter: CAC, MER, gross margin, chargeback rate and autonomy score — all in one place.' }}</p>
+    </div>
+
+    <!-- ── KPI ROW ── -->
+    <div class="ft-ue-kpis">
+
+      <div class="ft-ue-kpi ft-ue-kpi--primary">
+        <div class="ft-ue-kpi__icon">💰</div>
+        <div class="ft-ue-kpi__label">Gross Margin</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-gm">{{ section.settings.gross_margin | default: '58' }}%</div>
+        <div class="ft-ue-kpi__target">Target ≥ 55%</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--green">✓ On Track</div>
+      </div>
+
+      <div class="ft-ue-kpi">
+        <div class="ft-ue-kpi__icon">📣</div>
+        <div class="ft-ue-kpi__label">CAC (All Channels)</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-cac">${{ section.settings.cac | default: '24' }}</div>
+        <div class="ft-ue-kpi__target">Target ≤ $30 AUD</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--green">✓ Healthy</div>
+      </div>
+
+      <div class="ft-ue-kpi">
+        <div class="ft-ue-kpi__icon">📊</div>
+        <div class="ft-ue-kpi__label">MER (Marketing Efficiency)</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-mer">{{ section.settings.mer | default: '3.2' }}×</div>
+        <div class="ft-ue-kpi__target">Target ≥ 3.0×</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--green">✓ Profitable</div>
+      </div>
+
+      <div class="ft-ue-kpi">
+        <div class="ft-ue-kpi__icon">🔄</div>
+        <div class="ft-ue-kpi__label">Refund Rate</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-refund">{{ section.settings.refund_rate | default: '3.2' }}%</div>
+        <div class="ft-ue-kpi__target">Alert threshold: &gt;5%</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--green">✓ Normal</div>
+      </div>
+
+      <div class="ft-ue-kpi ft-ue-kpi--alert">
+        <div class="ft-ue-kpi__icon">⚠️</div>
+        <div class="ft-ue-kpi__label">Chargeback Rate</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-cb">{{ section.settings.chargeback_rate | default: '0.6' }}%</div>
+        <div class="ft-ue-kpi__target">Breach threshold: &gt;0.9%</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--yellow">⚠ Monitor</div>
+      </div>
+
+      <div class="ft-ue-kpi">
+        <div class="ft-ue-kpi__icon">🤖</div>
+        <div class="ft-ue-kpi__label">Autonomy Score</div>
+        <div class="ft-ue-kpi__value" id="ft-ue-auto">{{ section.settings.autonomy_score | default: '47' }}/100</div>
+        <div class="ft-ue-kpi__target">Ceiling ~80 with stack</div>
+        <div class="ft-ue-kpi__status ft-ue-kpi__status--blue">→ Building</div>
+      </div>
+
+    </div><!-- /ft-ue-kpis -->
+
+    <!-- ── UNIT ECONOMICS CALCULATOR ── -->
+    <div class="ft-ue-calc">
+      <h3 class="ft-ue-calc__title">📐 Per-Unit Economics Calculator</h3>
+      <p class="ft-ue-calc__sub">Model the real profitability of a single order after all costs</p>
+      <div class="ft-ue-calc__grid">
+        <div class="ft-ue-calc__inputs">
+          <div class="ft-ue-calc__group">
+            <label>Sell Price (AUD)</label>
+            <div class="ft-ue-calc__input-wrap"><span>$</span><input type="number" id="ft-ue-sell" value="89" step="0.01" oninput="ftUECalc()"></div>
+          </div>
+          <div class="ft-ue-calc__group">
+            <label>Supplier Cost (AUD)</label>
+            <div class="ft-ue-calc__input-wrap"><span>$</span><input type="number" id="ft-ue-cost" value="28" step="0.01" oninput="ftUECalc()"></div>
+          </div>
+          <div class="ft-ue-calc__group">
+            <label>Shipping Cost (AUD)</label>
+            <div class="ft-ue-calc__input-wrap"><span>$</span><input type="number" id="ft-ue-ship" value="6" step="0.01" oninput="ftUECalc()"></div>
+          </div>
+          <div class="ft-ue-calc__group">
+            <label>Ad Spend / Order (CAC)</label>
+            <div class="ft-ue-calc__input-wrap"><span>$</span><input type="number" id="ft-ue-ad" value="22" step="0.01" oninput="ftUECalc()"></div>
+          </div>
+          <div class="ft-ue-calc__group">
+            <label>Shopify Fees (2.9% + $0.30)</label>
+            <div class="ft-ue-calc__input-wrap"><span>$</span><input type="number" id="ft-ue-fees" value="" step="0.01" placeholder="auto" oninput="ftUECalc()"></div>
+          </div>
+          <div class="ft-ue-calc__group">
+            <label>Returns Allowance (%)</label>
+            <div class="ft-ue-calc__input-wrap"><span>%</span><input type="number" id="ft-ue-returns-pct" value="3" step="0.1" oninput="ftUECalc()"></div>
+          </div>
+        </div>
+        <div class="ft-ue-calc__output" id="ft-ue-output">
+          <div class="ft-ue-calc__output-title">Unit Economics Breakdown</div>
+          <div class="ft-ue-calc__rows" id="ft-ue-rows">
+            <!-- Populated by JS -->
+          </div>
+          <div class="ft-ue-calc__bottom" id="ft-ue-bottom">
+            <!-- Net profit + health indicator -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AUTONOMY ROADMAP ── -->
+    <div class="ft-ue-roadmap">
+      <h3 class="ft-ue-roadmap__title">🤖 26-Week Autonomy Roadmap</h3>
+      <p class="ft-ue-roadmap__sub">Score: {{ section.settings.autonomy_score | default: '47' }}/100 → Target 80+</p>
+      <div class="ft-ue-phases">
+
+        <div class="ft-ue-phase ft-ue-phase--done">
+          <div class="ft-ue-phase__head">
+            <div class="ft-ue-phase__num">Phase 1</div>
+            <div class="ft-ue-phase__weeks">Weeks 1–4</div>
+            <div class="ft-ue-phase__score">35 → 50</div>
+          </div>
+          <div class="ft-ue-phase__title">Foundation</div>
+          <div class="ft-ue-phase__cost">~$150/mo</div>
+          <ul class="ft-ue-phase__list">
+            <li>✅ DSers/AutoDS order automation</li>
+            <li>✅ Basic Shopify Flow rules</li>
+            <li>✅ Klaviyo abandoned checkout email</li>
+            <li>✅ Post-purchase thank-you sequence</li>
+          </ul>
+        </div>
+
+        <div class="ft-ue-phase ft-ue-phase--active">
+          <div class="ft-ue-phase__head">
+            <div class="ft-ue-phase__num">Phase 2</div>
+            <div class="ft-ue-phase__weeks">Weeks 5–10</div>
+            <div class="ft-ue-phase__score">50 → 62</div>
+          </div>
+          <div class="ft-ue-phase__title">Intelligence Layer</div>
+          <div class="ft-ue-phase__cost">~$350/mo</div>
+          <ul class="ft-ue-phase__list">
+            <li>🔄 AI chatbot (Tidio/Gorgias)</li>
+            <li>🔄 Dynamic pricing rules</li>
+            <li>🔄 Signifyd fraud automation</li>
+            <li>🔄 Pencil/Canva AI creative</li>
+          </ul>
+        </div>
+
+        <div class="ft-ue-phase">
+          <div class="ft-ue-phase__head">
+            <div class="ft-ue-phase__num">Phase 3</div>
+            <div class="ft-ue-phase__weeks">Weeks 11–18</div>
+            <div class="ft-ue-phase__score">62 → 75</div>
+          </div>
+          <div class="ft-ue-phase__title">Autonomy + Guardrails</div>
+          <div class="ft-ue-phase__cost">~$600/mo</div>
+          <ul class="ft-ue-phase__list">
+            <li>⏳ Inventory Source sync</li>
+            <li>⏳ Polar Analytics predictive</li>
+            <li>⏳ Ad spend cap automation</li>
+            <li>⏳ EcoReturns integration</li>
+          </ul>
+        </div>
+
+        <div class="ft-ue-phase">
+          <div class="ft-ue-phase__head">
+            <div class="ft-ue-phase__num">Phase 4</div>
+            <div class="ft-ue-phase__weeks">Weeks 19–26</div>
+            <div class="ft-ue-phase__score">75 → 80+</div>
+          </div>
+          <div class="ft-ue-phase__title">Optimisation</div>
+          <div class="ft-ue-phase__cost">~$800/mo</div>
+          <ul class="ft-ue-phase__list">
+            <li>⏳ Exception-only management</li>
+            <li>⏳ Supplier scorecards</li>
+            <li>⏳ Autonomous dashboard alerts</li>
+            <li>⏳ Monthly compliance review</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── HUMAN OVERSIGHT CADENCE ── -->
+    <div class="ft-ue-oversight">
+      <h3 class="ft-ue-oversight__title">⏰ Minimum Human Oversight Cadence</h3>
+      <div class="ft-ue-oversight__cards">
+        <div class="ft-ue-oversight__card">
+          <div class="ft-ue-oversight__freq">Daily</div>
+          <div class="ft-ue-oversight__time">15–20 min</div>
+          <ul>
+            <li>Failed/stuck orders</li>
+            <li>High-value fraud flags</li>
+            <li>Ad-spend anomalies</li>
+            <li>Escalated support tickets</li>
+          </ul>
+        </div>
+        <div class="ft-ue-oversight__card ft-ue-oversight__card--featured">
+          <div class="ft-ue-oversight__freq">Weekly</div>
+          <div class="ft-ue-oversight__time">60–90 min</div>
+          <ul>
+            <li>Inventory sync audit</li>
+            <li>Supplier performance</li>
+            <li>Pricing rule adjustments</li>
+            <li>Chatbot log review</li>
+            <li>CAC + MER check</li>
+          </ul>
+        </div>
+        <div class="ft-ue-oversight__card">
+          <div class="ft-ue-oversight__freq">Monthly</div>
+          <div class="ft-ue-oversight__time">3–4 hours</div>
+          <ul>
+            <li>Supplier relationship review</li>
+            <li>ACCC compliance check</li>
+            <li>Ad creative analysis</li>
+            <li>Financial reconciliation</li>
+            <li>Full workflow audit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RISK RADAR ── -->
+    <div class="ft-ue-risks">
+      <h3 class="ft-ue-risks__title">🚨 High-Severity Risk Tracker</h3>
+      <div class="ft-ue-risks__grid">
+        <div class="ft-ue-risk ft-ue-risk--red"><div class="ft-ue-risk__icon">🔌</div><div class="ft-ue-risk__name">Supplier API Deprecation</div><div class="ft-ue-risk__impact">Loss of order automation — manual fallback required</div><div class="ft-ue-risk__mitigation">Monitor changelog; maintain 2 backup suppliers per category</div></div>
+        <div class="ft-ue-risk ft-ue-risk--orange"><div class="ft-ue-risk__icon">💲</div><div class="ft-ue-risk__name">Price-Anchor Drift</div><div class="ft-ue-risk__impact">ACCC non-compliance + trust erosion</div><div class="ft-ue-risk__mitigation">Weekly pricing audit; Shopify Flow alert on compare_at_price inversion</div></div>
+        <div class="ft-ue-risk ft-ue-risk--red"><div class="ft-ue-risk__icon">🚫</div><div class="ft-ue-risk__name">Ad Account Ban</div><div class="ft-ue-risk__impact">Revenue to zero overnight</div><div class="ft-ue-risk__mitigation">2 ad accounts per platform; diversify to Google + TikTok; truth-safe claims only</div></div>
+        <div class="ft-ue-risk ft-ue-risk--orange"><div class="ft-ue-risk__icon">💳</div><div class="ft-ue-risk__name">Chargeback Rate Breach</div><div class="ft-ue-risk__impact">Stripe/PayPal account termination if &gt;0.9%</div><div class="ft-ue-risk__mitigation">Signifyd fraud tool; clear policies; tracking on all orders; SLA under 24h</div></div>
+        <div class="ft-ue-risk ft-ue-risk--yellow"><div class="ft-ue-risk__icon">📦</div><div class="ft-ue-risk__name">Inventory Sync Failure</div><div class="ft-ue-risk__impact">Overselling out-of-stock items</div><div class="ft-ue-risk__mitigation">15-min sync maximum; Shopify Flow auto-draft on OOS; supplier backup</div></div>
+        <div class="ft-ue-risk ft-ue-risk--yellow"><div class="ft-ue-risk__icon">🤖</div><div class="ft-ue-risk__name">AI Chatbot Hallucinations</div><div class="ft-ue-risk__impact">Incorrect promises to customers</div><div class="ft-ue-risk__mitigation">Weekly log review; human escalation for returns/refunds; constrained prompts</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ── KPI Row ── */
+.ft-ue-kpis { display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin-bottom:48px; }
+.ft-ue-kpi { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:16px; padding:22px 16px; text-align:center; transition:.3s; }
+.ft-ue-kpi:hover { transform:translateY(-3px); border-color:rgba(0,240,255,.15); }
+.ft-ue-kpi--primary { border-color:rgba(52,211,153,.2); background:linear-gradient(145deg,rgba(52,211,153,.04),rgba(0,0,0,0)); }
+.ft-ue-kpi--alert { border-color:rgba(255,193,7,.2); background:rgba(255,193,7,.03); }
+.ft-ue-kpi__icon { font-size:1.6rem; margin-bottom:10px; }
+.ft-ue-kpi__label { font-size:.68rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:10px; }
+.ft-ue-kpi__value { font-size:1.4rem; font-weight:900; color:#fff; margin-bottom:6px; }
+.ft-ue-kpi__target { font-size:.68rem; color:var(--ft-muted); margin-bottom:8px; }
+.ft-ue-kpi__status { display:inline-block; padding:3px 10px; border-radius:50px; font-size:.65rem; font-weight:900; }
+.ft-ue-kpi__status--green { background:rgba(52,211,153,.12); color:#34d399; }
+.ft-ue-kpi__status--yellow { background:rgba(255,193,7,.12); color:#fbbf24; }
+.ft-ue-kpi__status--blue { background:rgba(0,240,255,.1); color:var(--ft-cyan); }
+
+/* ── Calculator ── */
+.ft-ue-calc { background:var(--ft-surface); border:1px solid rgba(0,240,255,.15); border-radius:20px; padding:32px; margin-bottom:48px; }
+.ft-ue-calc__title { font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:6px; }
+.ft-ue-calc__sub { font-size:.84rem; color:var(--ft-muted); margin-bottom:24px; }
+.ft-ue-calc__grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
+.ft-ue-calc__inputs { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.ft-ue-calc__group label { display:block; font-size:.72rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+.ft-ue-calc__input-wrap { display:flex; align-items:center; background:rgba(255,255,255,.04); border:1px solid var(--ft-border); border-radius:9px; overflow:hidden; }
+.ft-ue-calc__input-wrap span { padding:0 10px; color:var(--ft-cyan); font-weight:800; font-size:.9rem; }
+.ft-ue-calc__input-wrap input { flex:1; background:none; border:none; padding:11px 10px 11px 0; color:#fff; font-size:.9rem; outline:none; }
+.ft-ue-calc__output { background:rgba(255,255,255,.02); border:1px solid var(--ft-border); border-radius:14px; padding:22px; }
+.ft-ue-calc__output-title { font-size:.85rem; font-weight:800; color:var(--ft-cyan); text-transform:uppercase; letter-spacing:.5px; margin-bottom:16px; }
+.ft-ue-calc__row { display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.86rem; }
+.ft-ue-calc__row-label { color:var(--ft-muted); }
+.ft-ue-calc__row-val { font-weight:700; color:var(--ft-text); }
+.ft-ue-calc__row-val--red { color:var(--ft-pink); }
+.ft-ue-calc__row-val--green { color:#34d399; }
+.ft-ue-calc__profit { margin-top:16px; padding:14px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; }
+.ft-ue-calc__profit--good { background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.2); }
+.ft-ue-calc__profit--warn { background:rgba(255,193,7,.08); border:1px solid rgba(255,193,7,.2); }
+.ft-ue-calc__profit--bad { background:rgba(255,45,111,.08); border:1px solid rgba(255,45,111,.2); }
+.ft-ue-calc__profit-label { font-size:.8rem; font-weight:800; color:var(--ft-muted); text-transform:uppercase; }
+.ft-ue-calc__profit-val { font-size:1.3rem; font-weight:900; }
+.ft-ue-calc__profit--good .ft-ue-calc__profit-val { color:#34d399; }
+.ft-ue-calc__profit--warn .ft-ue-calc__profit-val { color:#fbbf24; }
+.ft-ue-calc__profit--bad .ft-ue-calc__profit-val { color:var(--ft-pink); }
+.ft-ue-calc__health { font-size:.75rem; margin-top:10px; color:var(--ft-muted); }
+
+/* ── Autonomy Roadmap ── */
+.ft-ue-roadmap { margin-bottom:48px; }
+.ft-ue-roadmap__title { font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:6px; }
+.ft-ue-roadmap__sub { font-size:.84rem; color:var(--ft-muted); margin-bottom:24px; }
+.ft-ue-phases { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.ft-ue-phase { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:16px; padding:22px; }
+.ft-ue-phase--done { border-color:rgba(52,211,153,.25); background:linear-gradient(145deg,rgba(52,211,153,.04),rgba(0,0,0,0)); }
+.ft-ue-phase--active { border-color:rgba(0,240,255,.25); background:linear-gradient(145deg,rgba(0,240,255,.04),rgba(0,0,0,0)); }
+.ft-ue-phase__head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:4px; }
+.ft-ue-phase__num { font-size:.7rem; font-weight:900; color:var(--ft-cyan); text-transform:uppercase; letter-spacing:.8px; }
+.ft-ue-phase__weeks { font-size:.68rem; color:var(--ft-muted); }
+.ft-ue-phase__score { font-size:.7rem; font-weight:800; color:#34d399; background:rgba(52,211,153,.1); padding:2px 8px; border-radius:50px; }
+.ft-ue-phase__title { font-size:.95rem; font-weight:800; color:#fff; margin-bottom:4px; }
+.ft-ue-phase__cost { font-size:.75rem; color:var(--ft-muted); margin-bottom:14px; }
+.ft-ue-phase__list { list-style:none; padding:0; display:flex; flex-direction:column; gap:7px; }
+.ft-ue-phase__list li { font-size:.8rem; color:var(--ft-muted); }
+
+/* ── Oversight Cadence ── */
+.ft-ue-oversight { margin-bottom:48px; }
+.ft-ue-oversight__title { font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:20px; }
+.ft-ue-oversight__cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.ft-ue-oversight__card { background:var(--ft-surface); border:1px solid var(--ft-border); border-radius:16px; padding:24px; }
+.ft-ue-oversight__card--featured { border-color:rgba(0,240,255,.2); background:linear-gradient(145deg,rgba(0,240,255,.04),rgba(123,47,255,.03)); }
+.ft-ue-oversight__freq { font-size:1rem; font-weight:900; color:#fff; margin-bottom:4px; }
+.ft-ue-oversight__time { font-size:.82rem; color:var(--ft-cyan); font-weight:700; margin-bottom:16px; }
+.ft-ue-oversight__card ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:8px; }
+.ft-ue-oversight__card ul li { font-size:.83rem; color:var(--ft-muted); padding-left:14px; position:relative; }
+.ft-ue-oversight__card ul li::before { content:'›'; position:absolute; left:0; color:var(--ft-cyan); }
+
+/* ── Risk Radar ── */
+.ft-ue-risks__title { font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:20px; }
+.ft-ue-risks__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.ft-ue-risk { border-radius:14px; padding:20px; border:1px solid; }
+.ft-ue-risk--red { background:rgba(255,45,111,.04); border-color:rgba(255,45,111,.18); }
+.ft-ue-risk--orange { background:rgba(255,107,53,.04); border-color:rgba(255,107,53,.18); }
+.ft-ue-risk--yellow { background:rgba(255,193,7,.04); border-color:rgba(255,193,7,.18); }
+.ft-ue-risk__icon { font-size:1.4rem; margin-bottom:10px; }
+.ft-ue-risk__name { font-size:.88rem; font-weight:800; color:#fff; margin-bottom:7px; }
+.ft-ue-risk__impact { font-size:.78rem; color:var(--ft-muted); margin-bottom:10px; line-height:1.5; }
+.ft-ue-risk__mitigation { font-size:.75rem; color:var(--ft-cyan); line-height:1.5; padding-top:10px; border-top:1px solid rgba(255,255,255,.06); }
+
+@media(max-width:1100px) { .ft-ue-kpis { grid-template-columns:repeat(3,1fr); } }
+@media(max-width:900px) {
+  .ft-ue-kpis { grid-template-columns:repeat(2,1fr); }
+  .ft-ue-calc__grid { grid-template-columns:1fr; }
+  .ft-ue-phases { grid-template-columns:repeat(2,1fr); }
+  .ft-ue-oversight__cards { grid-template-columns:1fr; }
+  .ft-ue-risks__grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:600px) {
+  .ft-ue-kpis { grid-template-columns:1fr 1fr; }
+  .ft-ue-phases { grid-template-columns:1fr; }
+  .ft-ue-calc__inputs { grid-template-columns:1fr; }
+  .ft-ue-risks__grid { grid-template-columns:1fr; }
+}
+</style>
+
+<script>
+function ftUECalc() {
+  const sell = parseFloat(document.getElementById('ft-ue-sell').value) || 0;
+  const cost = parseFloat(document.getElementById('ft-ue-cost').value) || 0;
+  const ship = parseFloat(document.getElementById('ft-ue-ship').value) || 0;
+  const ad = parseFloat(document.getElementById('ft-ue-ad').value) || 0;
+  const feesInput = parseFloat(document.getElementById('ft-ue-fees').value);
+  const returnsPct = parseFloat(document.getElementById('ft-ue-returns-pct').value) || 0;
+
+  const fees = isNaN(feesInput) ? (sell * 0.029 + 0.30) : feesInput;
+  const returnsAllowance = sell * (returnsPct / 100);
+  const totalCost = cost + ship + ad + fees + returnsAllowance;
+  const netProfit = sell - totalCost;
+  const netMarginPct = sell > 0 ? (netProfit / sell * 100).toFixed(1) : 0;
+
+  const rows = document.getElementById('ft-ue-rows');
+  rows.innerHTML = [
+    { label: 'Sell Price', val: '$' + sell.toFixed(2), cls: '' },
+    { label: '− Supplier Cost', val: '-$' + cost.toFixed(2), cls: 'red' },
+    { label: '− Shipping', val: '-$' + ship.toFixed(2), cls: 'red' },
+    { label: '− Ad Spend (CAC)', val: '-$' + ad.toFixed(2), cls: 'red' },
+    { label: '− Payment Fees', val: '-$' + fees.toFixed(2), cls: 'red' },
+    { label: '− Returns Allowance', val: '-$' + returnsAllowance.toFixed(2), cls: 'red' },
+  ].map(r => `<div class="ft-ue-calc__row"><span class="ft-ue-calc__row-label">${r.label}</span><span class="ft-ue-calc__row-val${r.cls ? ' ft-ue-calc__row-val--' + r.cls : ''}">${r.val}</span></div>`).join('');
+
+  let cls = 'good', health = '✓ Healthy margin — profitable unit economics';
+  if (netProfit < 0) { cls = 'bad'; health = '✗ Negative margin — review costs immediately'; }
+  else if (netMarginPct < 20) { cls = 'warn'; health = '⚠ Low margin — consider reducing CAC or raising price'; }
+
+  document.getElementById('ft-ue-bottom').innerHTML = `
+    <div class="ft-ue-calc__profit ft-ue-calc__profit--${cls}">
+      <span class="ft-ue-calc__profit-label">Net Profit / Order</span>
+      <span class="ft-ue-calc__profit-val">${netProfit >= 0 ? '+' : ''}$${netProfit.toFixed(2)} (${netMarginPct}%)</span>
+    </div>
+    <div class="ft-ue-calc__health">${health}</div>
+  `;
+}
+document.addEventListener('DOMContentLoaded', ftUECalc);
+</script>
+
+{% schema %}
+{
+  "name": "FutureTek Unit Economics",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Section Label", "default": "Store Intelligence" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Unit Economics Dashboard" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Track the metrics that matter: CAC, MER, gross margin, chargeback rate and autonomy score." },
+    { "type": "text", "id": "gross_margin", "label": "Gross Margin %", "default": "58" },
+    { "type": "text", "id": "cac", "label": "CAC (AUD)", "default": "24" },
+    { "type": "text", "id": "mer", "label": "MER (x)", "default": "3.2" },
+    { "type": "text", "id": "refund_rate", "label": "Refund Rate %", "default": "3.2" },
+    { "type": "text", "id": "chargeback_rate", "label": "Chargeback Rate %", "default": "0.6" },
+    { "type": "text", "id": "autonomy_score", "label": "Autonomy Score /100", "default": "47" }
+  ],
+  "presets": [{ "name": "FutureTek Unit Economics" }]
+}
+{% endschema %}

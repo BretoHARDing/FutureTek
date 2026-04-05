@@ -1,0 +1,27 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "FutureTek",
+    "theme_version": "1.0.0",
+    "theme_author": "FutureTek",
+    "theme_documentation_url": "https://futuretek-9884.myshopify.com",
+    "theme_support_url": "https://futuretek-9884.myshopify.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_primary", "label": "Primary Color", "default": "#00f0ff" },
+      { "type": "color", "id": "color_secondary", "label": "Secondary Color", "default": "#7b2fff" },
+      { "type": "color", "id": "color_accent", "label": "Accent Color", "default": "#ff2d6f" },
+      { "type": "color", "id": "color_bg", "label": "Background Color", "default": "#0a0a14" },
+      { "type": "color", "id": "color_text", "label": "Text Color", "default": "#e0e0f0" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "font_heading", "label": "Heading Font", "default": "inter_n7" },
+      { "type": "font_picker", "id": "font_body", "label": "Body Font", "default": "inter_n4" }
+    ]
+  }
+]

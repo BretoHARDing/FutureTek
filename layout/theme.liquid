@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ page_title }} | {{ shop.name }}</title>
+    <meta name="description" content="{{ page_description | escape }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {{ content_for_header }}
+
+    <style>
+      :root {
+        --color-primary: #00f0ff;
+        --color-secondary: #7b2fff;
+        --color-bg: #0a0a14;
+        --color-surface: #12121f;
+        --color-text: #e0e0f0;
+        --color-text-muted: #8888aa;
+        --color-accent: #ff2d6f;
+        --font-main: 'Inter', 'Segoe UI', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+        --radius: 12px;
+        --transition: 0.3s ease;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: var(--font-main);
+        background: var(--color-bg);
+        color: var(--color-text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      a { color: var(--color-primary); text-decoration: none; transition: var(--transition); }
+      a:hover { color: var(--color-secondary); }
+      img { max-width: 100%; height: auto; display: block; }
+      .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 28px; border-radius: 50px; font-weight: 600;
+        font-size: 0.95rem; cursor: pointer; border: none;
+        transition: var(--transition); text-decoration: none;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        color: #fff;
+        box-shadow: 0 0 20px rgba(0,240,255,0.3);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 35px rgba(0,240,255,0.5);
+        color: #fff;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--color-primary);
+        color: var(--color-primary);
+      }
+      .btn-outline:hover {
+        background: var(--color-primary);
+        color: var(--color-bg);
+      }
+    </style>
+
+    {{ 'application.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    {% section 'header' %}
+    <main role="main">
+      {{ content_for_layout }}
+    </main>
+    {% section 'footer' %}
+    {{ 'application.js' | asset_url | script_tag }}
+  </body>
+</html>
