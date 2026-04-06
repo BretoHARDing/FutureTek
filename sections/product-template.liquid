@@ -249,7 +249,7 @@
         {% if rev_count == 0 %}
           <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"Arrived in 9 days — faster than expected. Works exactly as described, quality is great for the price. Would 100% recommend."</p><div class="ft-review-author"><div class="ft-review-av">S</div><div><div class="ft-review-name">Sarah M.</div><div class="ft-review-location">🇦🇺 Brisbane, QLD</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 9 days</div></div>
           <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"Ripper product. Bought two — one for me, one for a gift. Both arrived well packaged and the setup was dead easy."</p><div class="ft-review-author"><div class="ft-review-av">J</div><div><div class="ft-review-name">James R.</div><div class="ft-review-location">🇦🇺 Melbourne, VIC</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 7 days</div></div>
-          <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"FutureTek support team were amazing — answered my questions within 2 hours and sorted a minor issue immediately. Five stars."</p><div class="ft-review-author"><div class="ft-review-av">E</div><div><div class="ft-review-name">Emma L.</div><div class="ft-review-location">🇦🇺 Sydney, NSW</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 5 days</div></div>
+          <div class="ft-review-card"><div class="ft-review-stars">★★★★★</div><p class="ft-review-text">"Futuristech support team were amazing — answered my questions within 2 hours and sorted a minor issue immediately. Five stars."</p><div class="ft-review-author"><div class="ft-review-av">E</div><div><div class="ft-review-name">Emma L.</div><div class="ft-review-location">🇦🇺 Sydney, NSW</div></div></div><div class="ft-review-verified">✅ Verified Purchase · Delivered in 5 days</div></div>
         {% endif %}
       </div>
     </div>
@@ -274,11 +274,11 @@
         {% assign faq_count = 0 %}{% for block in section.blocks %}{% if block.type == 'faq' %}{% assign faq_count = faq_count | plus: 1 %}{% endif %}{% endfor %}
         {% if faq_count == 0 %}
           <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">How long does delivery take to Australia?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">We ship to all Australian states and territories. Estimated delivery is {{ section.settings.ship_window | default: '7–14 business days' }} from order confirmation. You'll receive a tracking number by email once dispatched.</div></div>
-          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">What is your returns policy?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">We offer a 30-day hassle-free returns policy. If you're not satisfied, contact us at support@futuretek.com.au and we'll arrange a full refund or exchange. Under Australian Consumer Law, you're also entitled to a remedy if the product has a major fault.</div></div>
-          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Does the product come with a warranty?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes — all FutureTek products include a minimum 2-year manufacturer warranty. In addition to this, your statutory consumer guarantees under Australian Consumer Law apply.</div></div>
-          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Is the product compatible with Australian power/standards?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes. All products sold on FutureTek are AU-compatible. Any power-related products include an AU/NZ standard plug or adapter. If unsure, check the product specifications or contact our support team.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">What is your returns policy?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">We offer a 30-day hassle-free returns policy. If you're not satisfied, contact us at support@futuristech.com.au and we'll arrange a full refund or exchange. Under Australian Consumer Law, you're also entitled to a remedy if the product has a major fault.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Does the product come with a warranty?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes — all Futuristech products include a minimum 2-year manufacturer warranty. In addition to this, your statutory consumer guarantees under Australian Consumer Law apply.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Is the product compatible with Australian power/standards?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes. All products sold on Futuristech are AU-compatible. Any power-related products include an AU/NZ standard plug or adapter. If unsure, check the product specifications or contact our support team.</div></div>
           <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Can I pay with AfterPay or Zip?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Yes — we accept AfterPay and Zip Pay, so you can split your purchase into 4 fortnightly payments interest-free. We also accept Visa, Mastercard, PayPal, and Apple Pay.</div></div>
-          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Where does my order ship from?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">FutureTek operates on a dropshipping model — orders are dispatched directly from our supplier network and delivered to your door. Shipping origin varies by product category. All delivery estimates shown are based on real supplier lead times to Australian addresses.</div></div>
+          <div class="ft-faq-item"><button class="ft-faq-q" onclick="ftFaq(this)">Where does my order ship from?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button><div class="ft-faq-a">Futuristech operates on a dropshipping model — orders are dispatched directly from our supplier network and delivered to your door. Shipping origin varies by product category. All delivery estimates shown are based on real supplier lead times to Australian addresses.</div></div>
         {% endif %}
       </div>
     </div>
@@ -529,7 +529,7 @@ function ftFaq(btn) {
 
 {% schema %}
 {
-  "name": "FutureTek Product Page",
+  "name": "Futuristech Product Page",
   "settings": [
     { "type": "text", "id": "outcome_headline", "label": "Outcome Headline (above price)", "info": "Brief outcome statement — what problem this solves. Leave blank to hide." },
     { "type": "text", "id": "offer_stack_title", "label": "Offer Stack Title", "default": "🎁 What's Included in Your Order" },
@@ -564,6 +564,6 @@ function ftFaq(btn) {
       { "type": "textarea", "id": "answer", "label": "Answer" }
     ]}
   ],
-  "presets": [{ "name": "FutureTek Product Page" }]
+  "presets": [{ "name": "Futuristech Product Page" }]
 }
 {% endschema %}
